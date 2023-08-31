@@ -1,5 +1,7 @@
 /* @import '@fontsource/fira-mono'; */
 @import url("https://fonts.googleapis.com/css2?family=Judson&family=Ubuntu:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500&family=Noto+Serif:wght@500&display=swap");
 
 :root {
   --font-body: Ubuntu, Arial, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -21,7 +23,7 @@
   --primary-ink: #000000;
   --accent-ink: #ffb703;
 
-  font-family: "Judson", serif;
+  font-family: "Noto-sans", "Judson", serif;
   font-family: "Ubuntu", sans-serif;
 
   color: var(--color-text);

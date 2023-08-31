@@ -36,6 +36,11 @@ const config = {
           900: "#A5371B",
         },
       },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+        Noto: ["Noto Sans", "sans-serif"],
+        NotoSerif: ["Noto Serif", "serif"],
+      },
     },
   },
 };

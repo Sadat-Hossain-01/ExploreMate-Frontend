@@ -1,13 +1,7 @@
 <script lang="ts">
-  import {
-    Input,
-    Label,
-    Search,
-    Heading,
-    Span,
-    Alert,
-    Button,
-  } from "flowbite-svelte";
+  import { Input, Label, Search, Heading, Span, Alert } from "flowbite-svelte";
+  import PlanStore from "$lib/stores/planstore";
+  import { goto } from "$app/navigation";
   import { Icon } from "flowbite-svelte-icons";
 
   let unique = {};
@@ -29,6 +23,11 @@
     "Rangpur",
     "Mymensingh",
     "Cox's Bazar",
+    "Calcutta",
+    "Chennai",
+    "Canberra",
+    "Cairo",
+    "Cape Town",
   ];
   let filtered_cities: string[] = [];
 
@@ -154,6 +153,10 @@
                 on:click|stopPropagation={() => {
                   prev_city_input = city_input = city;
                   input_ok = true;
+                  PlanStore.update((current_data) => {
+                    current_data.City = city_input;
+                    return current_data;
+                  });
                   filtered_cities = [];
                 }}
               >
@@ -173,6 +176,9 @@
           unique = {};
           show_error = true;
           return;
+        } else {
+          show_error = false;
+          goto(`/newplan/destinations`);
         }
       }}>Proceed</button
     >
