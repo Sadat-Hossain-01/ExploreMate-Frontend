@@ -59,7 +59,7 @@
 
 <svelte:window on:click|stopPropagation={() => (suggestion_open = false)} />
 
-<div class="flex flex-col min-h-screen pt-10 w-1/3 mx-auto mt-5 space-y-3">
+<div class="flex flex-col h-screen pt-10 w-1/3 mx-auto my-5 space-y-3">
   <Heading
     tag="h1"
     class="mb-4"
@@ -137,50 +137,52 @@
     <Search bind:value={city_input} placeholder={"Search Cities"} />
   </Label>
 
-  {#if suggestion_open && city_input.length > 0 && filtered_cities.length > 0}
-    <div
-      id="dropdown"
-      class="z-10 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 w-full"
-    >
-      <ul
-        class="py-1 text-base text-gray-700 dark:text-gray-200 w-full"
-        aria-labelledby="dropdownDefault"
+  <div class="grid place-items-center">
+    {#if suggestion_open && city_input.length > 0 && filtered_cities.length > 0}
+      <div
+        id="dropdown"
+        class="z-10 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 w-full"
       >
-        {#each filtered_cities as city}
-          <li>
-            <button
-              class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left rounded-lg"
-              on:click|stopPropagation={() => {
-                prev_city_input = city_input = city;
-                input_ok = true;
-                filtered_cities = [];
-              }}
-            >
-              {@html makeMatchBold(city)}
-            </button>
-          </li>
-        {/each}
-      </ul>
-    </div>
-  {/if}
+        <ul
+          class="py-1 text-base text-gray-700 dark:text-gray-200 w-full"
+          aria-labelledby="dropdownDefault"
+        >
+          {#each filtered_cities as city}
+            <li>
+              <button
+                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left rounded-lg"
+                on:click|stopPropagation={() => {
+                  prev_city_input = city_input = city;
+                  input_ok = true;
+                  filtered_cities = [];
+                }}
+              >
+                {@html makeMatchBold(city)}
+              </button>
+            </li>
+          {/each}
+        </ul>
+      </div>
+    {/if}
 
-  <button
-    type="button"
-    class="z-0 focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mx-auto mb-2 dark:focus:ring-yellow-900"
-    on:click={() => {
-      if (!input_ok) {
-        unique = {};
-        show_error = true;
-        return;
-      }
-    }}>Proceed</button
-  >
-  {#if show_error}
-    {#key unique}
-      <Alert color="red" dismissable>
-        <Icon name="info-circle-solid" slot="icon" class="w-4 h-4" />
-        You should select a city to travel.
-      </Alert>
-    {/key}
-  {/if}
+    <button
+      type="button"
+      class="z-0 fixed bottom-10 focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mx-auto dark:focus:ring-yellow-900"
+      on:click={() => {
+        if (!input_ok) {
+          unique = {};
+          show_error = true;
+          return;
+        }
+      }}>Proceed</button
+    >
+    {#if show_error}
+      {#key unique}
+        <Alert color="red" dismissable>
+          <Icon name="info-circle-solid" slot="icon" class="w-4 h-4" />
+          You should select a city to travel.
+        </Alert>
+      {/key}
+    {/if}
+  </div>
 </div>
