@@ -4,9 +4,9 @@
 
 <svelte:head>
     <title>Home</title>
-    <meta name="description" content="Svelte demo app" />
+    <meta name="description" content="Home Page" />
 </svelte:head>
-
+ 
 <div class="flex justify-center h-full pt-24 space-x-24">
     <div
         class="flex-col self-center justify-center max-w-xl space-y-6 tracking-wider"
@@ -19,7 +19,7 @@
         <button
             type="button"
             class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
-            >Signup/Login</button
+            >Signup / Login</button
         >
     </div>
     <div class="">
