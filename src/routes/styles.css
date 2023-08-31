@@ -1,4 +1,5 @@
 /* @import '@fontsource/fira-mono'; */
+@import url('https://fonts.googleapis.com/css2?family=Judson&family=Ubuntu:wght@300&display=swap');
 
 :root {
 	--font-body: Ubuntu, Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
@@ -12,11 +13,21 @@
 	--color-text: rgba(0, 0, 0, 0.7);
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
-	font-family: var(--font-body);
+
+	--primary-col: #EDF2F4;
+	--secondary-col: #192A51;
+	--accent-col: #FFB703;
+
+	--primary-ink: #000000;
+	--accent-ink: #FFB703;
+
+	font-family: 'Judson', serif;
+	font-family: 'Ubuntu', sans-serif;
+
 	color: var(--color-text);
 }
 
-body {
+/* body {
 	min-height: 100vh;
 	margin: 0;
 	background-attachment: fixed;
@@ -26,9 +37,9 @@ body {
 			rgba(255, 255, 255, 0.75) 0%,
 			rgba(255, 255, 255, 0) 100%),
 		linear-gradient(180deg, var(--color-bg-0) 0%, var(--color-bg-1) 15%, var(--color-bg-2) 50%);
-}
+} */
 
-h1,
+/* h1,
 h2,
 p {
 	font-weight: 400;
@@ -102,4 +113,4 @@ button:focus:not(:focus-visible) {
 	position: absolute;
 	width: 1px;
 	white-space: nowrap;
-}
+} */

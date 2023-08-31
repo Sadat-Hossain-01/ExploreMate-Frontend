@@ -13,6 +13,15 @@ const config = {
   theme: {
     extend: {
       colors: {
+        // custom bg colors
+        "primary-col": "var(--primary-col)",
+        "secondary-col": "var(--secondary-col)",
+        "accent-col": "var(--accent-col)",
+
+        // custom text colors
+        "primary-ink": "var(--primary-ink)",
+        "accent-ink": "var(--accent-ink)",
+
         // flowbite-svelte
         primary: {
           50: "#FFF5F2",

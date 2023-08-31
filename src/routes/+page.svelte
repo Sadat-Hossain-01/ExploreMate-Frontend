@@ -1,59 +1,37 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+    import home_img from "$lib/images/home-1.jpg";
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+    <title>Home</title>
+    <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to ExploreMate
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
+<div class="flex justify-center h-full pt-24 space-x-24">
+    <div
+        class="flex-col self-center justify-center max-w-xl space-y-6 tracking-wider"
+    >
+        <div class="text-6xl font-bold text-primary-ink">Life Is Beautiful</div>
+        <div class="text-base font-semibold text-gray-500">
+            Discover Your Next Adventure with Exploremate - Your Gateway to
+            Memorable Journeys Around the World.
+        </div>
+        <button
+            type="button"
+            class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+            >Signup/Login</button
+        >
+    </div>
+    <div class="">
+        <img
+            src={home_img}
+            width="450"
+            height="600"
+            class="rounded-lg"
+            alt=""
+        />
+    </div>
+</div>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
 </style>
