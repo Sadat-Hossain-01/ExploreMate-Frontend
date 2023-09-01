@@ -2,8 +2,7 @@ import { writable } from "svelte/store";
 
 const PlanStore = writable(
     {
-        City: "",
-        Name: "",
+        City: "Sylhet",
     });
 
 export default PlanStore;

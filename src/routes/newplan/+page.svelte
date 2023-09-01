@@ -153,10 +153,6 @@
                 on:click|stopPropagation={() => {
                   prev_city_input = city_input = city;
                   input_ok = true;
-                  PlanStore.update((current_data) => {
-                    current_data.City = city_input;
-                    return current_data;
-                  });
                   filtered_cities = [];
                 }}
               >
@@ -178,6 +174,10 @@
           return;
         } else {
           show_error = false;
+          PlanStore.update((current_data) => {
+            current_data.City = city_input;
+            return current_data;
+          });
           goto(`/newplan/destinations`);
         }
       }}>Proceed</button

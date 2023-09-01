@@ -40,6 +40,7 @@ const config = {
         sans: ["Inter", "sans-serif"],
         Noto: ["Noto Sans", "sans-serif"],
         NotoSerif: ["Noto Serif", "serif"],
+        Fredoka: ["Fredoka One", "sans-serif"],
       },
     },
   },

@@ -1,25 +1,18 @@
 <script lang="ts">
   import type { Destination } from "./destination";
-  import type { Plan } from "./plan";
   import PlanStore from "$lib/stores/planstore";
   import Destinationcard from "./destinationcard.svelte";
+  import { Search } from "flowbite-svelte";
 
   let city: string = "";
+  let destination_input: string = "";
 
   PlanStore.subscribe((data) => {
     city = data.City;
   });
 
-  const shorten_text = (text: string, max_length: number) => {
-    if (text.length > max_length) {
-      return text.substring(0, max_length) + "...";
-    } else {
-      return text;
-    }
-  };
-
   //   declare a dummy list of 10 destinations
-  let destinations: Array<Destination> = [
+  let suggested_destinations: Array<Destination> = [
     {
       id: 1,
       name: "Cox's Bazar",
@@ -76,6 +69,24 @@
       cost: 1000, // in BDT
     },
   ];
+
+  let filtered_destinations: Array<Destination> = [];
+  let selected_destinations: Array<Destination> = [];
+  let showable_destinations: Array<Destination> = [];
+  let show_selected: boolean = true;
+  $: {
+    selected_destinations = suggested_destinations.filter(
+      (destination) => destination.selected
+    );
+    filtered_destinations = suggested_destinations.filter((destination) =>
+      destination.name.toLowerCase().includes(destination_input.toLowerCase())
+    );
+    if (show_selected) {
+      showable_destinations = selected_destinations;
+    } else {
+      showable_destinations = filtered_destinations;
+    }
+  }
 </script>
 
 <div class="z-50 flex flex-col-reverse lg:flex-row">
@@ -90,16 +101,35 @@
         </p>
       </div>
       <div class="flex flex-grow px-3 pb-52 md:px-12">
-        <div>
-          <div class="mb-6 flex items-stretch gap-2 md:gap-3">
-            Search Box Here
+        <div class="w-full">
+          <div class="mb-8 flex items-stretch gap-2 md:gap-3">
+            <div class="relative w-full basis-10/12">
+              <Search
+                bind:value={destination_input}
+                placeholder={"Search Destinations"}
+              />
+            </div>
+            <div class="w-full basis-2/12">
+              <button
+                class="flex items-center w-full justify-center bg-accent-col px-4 py-2 text-sm font-medium text-primary-ink rounded-md hover:bg-yellow-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                on:click={() => {
+                  show_selected = !show_selected;
+                }}
+              >
+                <span class="hidden h-full whitespace-nowrap md:block"
+                  >{show_selected
+                    ? "Show Suggestions"
+                    : "Show Selections"}</span
+                >
+              </button>
+            </div>
           </div>
           <div>
             <div
               class="grid grid-flow-row-dense grid-cols-1 gap-4 pb-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
             >
-              {#each destinations as destination}
-                <Destinationcard {destination} />
+              {#each showable_destinations as destination}
+                <Destinationcard bind:destination />
               {/each}
             </div>
           </div>
@@ -107,30 +137,14 @@
       </div>
     </div>
   </section>
-</div>
-
-<!-- <div class="grid grid-cols-2 gap-4">
-  <div class="col-span-1">
-    Top Sights
-    {city}
-    <div class="flex flex-grow space-x-3">
-      {#each destinations as destination}
-        <Card img={destination.image_url} size={"xl"} class="mb-4 h-3/4">
-          <h5
-            class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-          >
-            {destination.name}
-          </h5>
-          <p
-            class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight"
-          >
-            {shorten_text(destination.description, 100)}
-          </p>
-        </Card>
+  <section
+    class="fixed right-0 h-full w-full overflow-hidden border-l border-solid border-gray-200 transition-transform lg:w-[45%] translate-x-full md:block lg:translate-x-0"
+  >
+    <div class="relative flex h-full w-full flex-row-reverse">
+      Map Here
+      {#each selected_destinations as selected_destination}
+        {selected_destination.name}
       {/each}
     </div>
-  </div>
-  <div class="col-span-1">
-    map should be here
-  </div>
-</div> -->
+  </section>
+</div>
