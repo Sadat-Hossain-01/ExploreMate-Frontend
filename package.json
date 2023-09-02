@@ -27,6 +27,7 @@
 	"type": "module",
 	"dependencies": {
 		"flowbite": "^1.8.1",
-		"flowbite-svelte": "^0.44.4"
+		"flowbite-svelte": "^0.44.4",
+		"svelte-google-maps": "^0.2.0"
 	}
 }

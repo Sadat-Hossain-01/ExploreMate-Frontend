@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Input, Label, Search, Heading, Span, Alert } from "flowbite-svelte";
-  import PlanStore from "$lib/stores/planstore";
+  import plan_store from "$lib/stores/planstore";
   import { goto } from "$app/navigation";
   import { Icon } from "flowbite-svelte-icons";
 
@@ -58,7 +58,7 @@
 
 <svelte:window on:click|stopPropagation={() => (suggestion_open = false)} />
 
-<div class="flex flex-col h-screen pt-10 w-1/3 mx-auto my-5 space-y-3">
+<div class="flex flex-col w-1/3 h-screen pt-10 mx-auto my-5 space-y-3">
   <Heading
     tag="h1"
     class="mb-4"
@@ -68,23 +68,23 @@
       <Span gradient>Plan Your Trip</Span>
     </div>
   </Heading>
-  <Label class="space-y-2 mb-2 text-base text-primary-ink font-semibold">
+  <Label class="mb-2 space-y-2 text-base font-semibold text-primary-ink">
     <span>When does your tour start?</span>
     <Input type="date" placeholder="Start Date" size="md" />
   </Label>
 
-  <Label for="partners" class="mb-2 text-base text-primary-ink font-semibold"
+  <Label for="partners" class="mb-2 text-base font-semibold text-primary-ink"
     >Expected Duration of Tour (in days)</Label
   >
   <div class="flex flex-row justify-between space-x-2">
     <Input
-      class="block w-full disabled:cursor-not-allowed disabled:opacity-50 pl-11 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 sm:text-base rounded-lg"
+      class="block w-full text-gray-900 border-gray-300 rounded-lg disabled:cursor-not-allowed disabled:opacity-50 pl-11 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 sm:text-base"
       readonly
       value={day_count.toString()}
     />
     <button
       type="button"
-      class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 mr-2 mb-1 dark:focus:ring-yellow-900"
+      class="px-5 mb-1 mr-2 text-lg font-semibold rounded-lg focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-900"
       on:click={() => {
         if (day_count < 30) day_count++;
       }}
@@ -93,7 +93,7 @@
     </button>
     <button
       type="button"
-      class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 mr-2 mb-1 dark:focus:ring-yellow-900"
+      class="px-5 mb-1 mr-2 text-lg font-semibold rounded-lg focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-900"
       on:click={() => {
         if (day_count > 1) day_count--;
       }}
@@ -102,18 +102,18 @@
     </button>
   </div>
 
-  <Label for="partners" class="mb-2 text-base text-primary-ink font-semibold"
+  <Label for="partners" class="mb-2 text-base font-semibold text-primary-ink"
     >How many people will possibly go with you?</Label
   >
   <div class="flex flex-row justify-between space-x-2">
     <Input
-      class="block w-full disabled:cursor-not-allowed disabled:opacity-50 pl-11 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 sm:text-base rounded-lg"
+      class="block w-full text-gray-900 border-gray-300 rounded-lg disabled:cursor-not-allowed disabled:opacity-50 pl-11 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 sm:text-base"
       readonly
       value={traveler_count.toString()}
     />
     <button
       type="button"
-      class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 mr-2 mb-1 dark:focus:ring-yellow-900"
+      class="px-5 mb-1 mr-2 text-lg font-semibold rounded-lg focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-900"
       on:click={() => {
         if (traveler_count < 15) traveler_count++;
       }}
@@ -122,7 +122,7 @@
     </button>
     <button
       type="button"
-      class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 mr-2 mb-1 dark:focus:ring-yellow-900"
+      class="px-5 mb-1 mr-2 text-lg font-semibold rounded-lg focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-900"
       on:click={() => {
         if (traveler_count > 0) traveler_count--;
       }}
@@ -131,7 +131,7 @@
     </button>
   </div>
 
-  <Label class="space-y-2 mb-2 text-base text-primary-ink font-semibold">
+  <Label class="mb-2 space-y-2 text-base font-semibold text-primary-ink">
     <span>Where do you want to go to?</span>
     <Search bind:value={city_input} placeholder={"Search Cities"} />
   </Label>
@@ -140,16 +140,16 @@
     {#if suggestion_open && city_input.length > 0 && filtered_cities.length > 0}
       <div
         id="dropdown"
-        class="z-10 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 w-full"
+        class="z-10 w-full bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700"
       >
         <ul
-          class="py-1 text-base text-gray-700 dark:text-gray-200 w-full"
+          class="w-full py-1 text-base text-gray-700 dark:text-gray-200"
           aria-labelledby="dropdownDefault"
         >
           {#each filtered_cities as city}
             <li>
               <button
-                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left rounded-lg"
+                class="block w-full px-4 py-2 text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 on:click|stopPropagation={() => {
                   prev_city_input = city_input = city;
                   input_ok = true;
@@ -174,8 +174,8 @@
           return;
         } else {
           show_error = false;
-          PlanStore.update((current_data) => {
-            current_data.City = city_input;
+          plan_store.update((current_data) => {
+            current_data.city = city_input;
             return current_data;
           });
           goto(`/newplan/destinations`);

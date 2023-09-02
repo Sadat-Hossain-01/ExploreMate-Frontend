@@ -7,4 +7,6 @@ export interface Destination {
     time: number;
     cost: number;
     image_url: string;
+    lat: number;
+    lng: number;
 };
