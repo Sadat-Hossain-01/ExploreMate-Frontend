@@ -1,14 +1,15 @@
-<script type="ts">
+<script lang="ts">
     import { onMount } from "svelte";
     import plan_store from "$lib/stores/planstore";
+    import type { Plan } from "$lib/interfaces/plan";
 
-    let container;
-    let map;
-    let markers = [];
+    let container : HTMLDivElement;
+    let map : google.maps.Map;
+    let markers : google.maps.Marker[] = [];
     let zoom = 8;
-    let center = { lat: 41.00468597585661, lng: 28.961356447690868 };
+    let center = { lat: 23.6850, lng: 90.3563 };
 
-    function update_map(data) {
+    function update_map(data : Plan) {
         markers.forEach((marker) => {
             marker.setMap(null);
         });
@@ -32,7 +33,6 @@
             });
             markers.push(marker);
         });
-        console.log("typeof map" + typeof map);
 
         if (map && data.destinations.length > 0) {
             map.setCenter({

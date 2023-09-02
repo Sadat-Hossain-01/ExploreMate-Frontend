@@ -77,7 +77,7 @@
                     <p class=" text-blue-gray-400">
                         {destination.time.toString() + " minutes"}
                     </p>
-                    <div class="ml-auto">{destination.cost}</div>
+                    <div class="ml-auto">{"BDT"+destination.cost}</div>
                 </div>
             </div>
         </div>

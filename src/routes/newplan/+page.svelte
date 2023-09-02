@@ -56,6 +56,9 @@
   };
 </script>
 
+<svelte:head>
+  <title>Plan Your Trip</title>
+</svelte:head>
 <svelte:window on:click|stopPropagation={() => (suggestion_open = false)} />
 
 <div class="flex flex-col w-1/3 h-screen pt-10 mx-auto my-5 space-y-3">
