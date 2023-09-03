@@ -21,7 +21,7 @@
         >
             <button
                 class="min-h-[10rem] w-full cursor-pointer overflow-hidden rounded-t-xl bg-cover bg-center"
-                style="background-image: url('{destination.image_url}')"
+                style="background-image: url('{destination.photo_link}')"
             >
                 <div
                     class="group flex h-full w-full flex-col items-center justify-center gap-1 text-white hover:bg-[#0000006e]"
@@ -75,9 +75,11 @@
                 </div>
                 <div class="flex justify-between text-base">
                     <p class=" text-blue-gray-400">
-                        {destination.time.toString() + " minutes"}
+                        {destination.estimated_time.toString() + " hours"}
                     </p>
-                    <div class="ml-auto">{"BDT"+destination.cost}</div>
+                    <div class="ml-auto">
+                        {"BDT" + destination.estimated_cost}
+                    </div>
                 </div>
             </div>
         </div>
