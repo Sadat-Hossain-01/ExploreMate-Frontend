@@ -6,29 +6,29 @@
     import Map from "../map.svelte";
     export let data;
 
-    let city: string = "";
+    let current_city: string = "";
     let destination_input: string = "";
 
-    plan_store.subscribe((data) => {
-        city = data.city;
+    plan_store.subscribe((current_data) => {
+        current_city = current_data.city;
     });
 
-    let suggested_destinations: any = data.destinations;
 
+    let suggested_destinations : Array<Destination> = data.destinations;
     let filtered_destinations: Array<Destination> = [];
     let selected_destinations: Array<Destination> = [];
     let showable_destinations: Array<Destination> = [];
-    let show_selected: boolean = false;
+    let show_selected_ones: boolean = false;
     $: {
         selected_destinations = suggested_destinations.filter(
-            (destination) => destination.selected
+            (destination : any) => destination.selected
         );
-        filtered_destinations = suggested_destinations.filter((destination) =>
+        filtered_destinations = suggested_destinations.filter((destination : any) =>
             destination.name
                 .toLowerCase()
                 .includes(destination_input.toLowerCase())
         );
-        if (show_selected) {
+        if (show_selected_ones) {
             showable_destinations = selected_destinations;
         } else {
             showable_destinations = filtered_destinations;
@@ -50,12 +50,12 @@
             <div class="px-3 mt-12 mb-8 md:px-12">
                 <div class="flex flex-col justify-start gap-4">
                     <h2 class="text-3xl font-bold md:text-4xl">
-                        Top Sights in {city}
+                        Top Sights in {current_city}
                     </h2>
                 </div>
                 <p class="mt-4 text-base primary-text-ink md:text-lg">
                     Select the destinations you would like to include for your
-                    visit to {city}
+                    visit to {current_city}
                 </p>
             </div>
             <div class="flex flex-grow px-3 pb-52 md:px-12">
@@ -71,12 +71,12 @@
                             <button
                                 class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium rounded-md bg-accent-col text-primary-ink hover:bg-yellow-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                                 on:click={() => {
-                                    show_selected = !show_selected;
+                                    show_selected_ones = !show_selected_ones;
                                 }}
                             >
                                 <span
                                     class="hidden h-full whitespace-nowrap md:block"
-                                    >{show_selected
+                                    >{show_selected_ones
                                         ? "Show Suggestions"
                                         : "Show Selections"}</span
                                 >

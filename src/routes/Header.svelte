@@ -19,6 +19,7 @@
     userid: "",
     username: "",
     email: "",
+    avatar_link: "",
   };
 
   user_store.subscribe((value) => {
@@ -49,7 +50,7 @@
   <div class="flex items-center md:order-2">
     <Avatar
       id="avatar-menu"
-      src="https://scontent.fdac24-4.fna.fbcdn.net/v/t39.30808-6/278818457_463589072117492_1085666591316634476_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=a2f6c7&_nc_eui2=AeGdZibHVVRh4MbqA4wqEgDRYdmr0OJ1bAFh2avQ4nVsAcpsTSsH3ViitPxo-HSxNGq2S5puLTg6rTtFM1h1jLsx&_nc_ohc=ilxQFDtrZyYAX8bIMO4&_nc_ht=scontent.fdac24-4.fna&oh=00_AfDjdXgCwMvsv8Q7bDjiKI8MQg8BSTb79WsOivF5y3rkAw&oe=64F3EFE7"
+      src={current_user.avatar_link}
     />
     <NavHamburger
       on:click={toggle}

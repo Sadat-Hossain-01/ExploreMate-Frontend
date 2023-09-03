@@ -3,6 +3,7 @@
   import plan_store from "$lib/stores/planstore";
   import { goto } from "$app/navigation";
   import { Icon } from "flowbite-svelte-icons";
+  export let data;
 
   let unique = {};
 
@@ -13,22 +14,13 @@
   let day_count: number = 3;
   let suggestion_open: boolean = false;
   let show_error: boolean = false;
-  let cities = [
-    "Dhaka",
-    "Chittagong",
-    "Sylhet",
-    "Rajshahi",
-    "Khulna",
-    "Barishal",
-    "Rangpur",
-    "Mymensingh",
-    "Cox's Bazar",
-    "Calcutta",
-    "Chennai",
-    "Canberra",
-    "Cairo",
-    "Cape Town",
-  ];
+  
+  // console.log(data);
+
+  let cities: string[] = [];
+  data.cities.forEach((city : any) => {
+    cities.push(city.name + ", " + city.state + ", " + city.country);
+  });
   let filtered_cities: string[] = [];
 
   $: {
