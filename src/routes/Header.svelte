@@ -30,7 +30,7 @@
     { name: "About", path: "/about" },
     { name: "Plan Tour", path: "/newplan" },
     { name: "Explore", path: "/newplan/destinations" }, //just for testing
-    { name: "Itinerary", path: "/newplan/itinerary" }, // just for testing
+    { name: "Events", path: "/newplan/events" }, // just for testing
   ];
 </script>
 
