@@ -4,7 +4,8 @@ import type { Plan } from "../interfaces/plan";
 
 const plan_store = writable<Plan>({
     city: "",
-    destinations: []
+    destinations: [],
+    events: [],
 });
 
 export default plan_store;
