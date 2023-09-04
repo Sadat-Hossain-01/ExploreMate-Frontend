@@ -18,10 +18,6 @@
   let date_error_message: string = "";
   let city_error_message: string = "";
 
-  plan_store.subscribe((current_data) => {
-    if (current_data.choice_level != 0) current_data.choice_level = 0;
-  });
-
   $: {
     // console.log(start_date, day_count, traveler_count);
     if (start_date.length == 0) {
@@ -193,7 +189,7 @@
   <button
     type="button"
     class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mx-auto dark:focus:ring-yellow-900"
-    on:click={() => {
+    on:click|stopPropagation={() => {
       if (!city_input_ok) {
         unique = {};
         city_error_message = "Please select a city to travel.";

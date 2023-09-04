@@ -33,7 +33,7 @@
         <div>
           <div>
             <div class="flex items-center justify-between">
-              <h3 class="text-xl font-bold line-clamp-2 h-20">
+              <h3 class="text-xl font-bold line-clamp-1">
                 {destination.name}
               </h3>
               <div class="relative -right-3">

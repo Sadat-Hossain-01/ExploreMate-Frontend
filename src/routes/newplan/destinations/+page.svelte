@@ -6,13 +6,7 @@
   import Map from "../map.svelte";
   export let data;
 
-  let current_city: string = "";
   let search_input: string = "";
-
-  plan_store.subscribe((current_data) => {
-    current_city = current_data.city;
-    if (current_data.choice_level < 1) current_data.choice_level = 1;
-  });
 
   let destination_suggestions: Array<Destination> = data.destinations;
   let destination_selections: Array<Destination> = [];
@@ -20,8 +14,6 @@
   let filtered_selections: Array<Destination> = []; // filtered based on input
   let showable_destinations: Array<Destination> = [];
   let show_selected_ones: boolean = false;
-
-  let choice_level: number;
 
   $: {
     destination_selections = destination_suggestions.filter(
@@ -40,10 +32,8 @@
     else if (!show_selected_ones && search_input.length > 0)
       showable_destinations = filtered_suggestions;
     else showable_destinations = destination_suggestions;
-    plan_store.update((data) => {
-      data.destinations = destination_selections;
-      return data;
-    });
+
+    $plan_store.destinations = destination_selections;
   }
 </script>
 
@@ -57,11 +47,11 @@
       <div class="px-3 mt-12 mb-8 md:px-12">
         <div class="flex flex-col justify-start gap-4">
           <h2 class="text-3xl font-bold md:text-4xl">
-            Top Sights in {current_city}
+            Top Sights in {$plan_store.city}
           </h2>
         </div>
         <p class="mt-4 text-base primary-text-ink md:text-lg">
-          Select the destinations you would like to include for your visit to {current_city}
+          Select the destinations you would like to include for your visit to {$plan_store.city}
         </p>
       </div>
       <div class="flex flex-grow px-3 pb-52 md:px-12">
