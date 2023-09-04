@@ -1,12 +1,6 @@
-import plan_store from "$lib/stores/planstore";
 import server_store from "$lib/stores/serverstore";
 
-let current_city: string = "";
 let server_url: string = "";
-
-plan_store.subscribe((plan) => {
-  current_city = plan.city;
-});
 
 server_store.subscribe((url: string) => {
   server_url = url;
@@ -14,18 +8,17 @@ server_store.subscribe((url: string) => {
 
 export async function load() {
   try {
-    const response = await fetch(server_url + "/city", {
-      method: "POST",
+    const response = await fetch(server_url + "/recom", {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ city: current_city }),
     });
 
     if (response.ok) {
       const data = await response.json();
       return {
-        destinations: data,
+        cities: data,
       };
     } else {
       return {

@@ -3,44 +3,60 @@
   import plan_store from "$lib/stores/planstore";
   import { goto } from "$app/navigation";
   import { Icon } from "flowbite-svelte-icons";
+  export let data;
 
   let unique = {};
 
   let prev_city_input: string = "";
   let city_input: string = "";
-  let input_ok: boolean = false;
+  let city_input_ok: boolean = false;
   let traveler_count: number = 0;
   let day_count: number = 3;
   let suggestion_open: boolean = false;
   let show_error: boolean = false;
-  let cities = [
-    "Dhaka",
-    "Chittagong",
-    "Sylhet",
-    "Rajshahi",
-    "Khulna",
-    "Barishal",
-    "Rangpur",
-    "Mymensingh",
-    "Cox's Bazar",
-    "Calcutta",
-    "Chennai",
-    "Canberra",
-    "Cairo",
-    "Cape Town",
-  ];
+  let start_date: string = "";
+  let date_error_message: string = "";
+  let city_error_message: string = "";
+
+  // console.log(data);
+
+  $: {
+    // console.log(start_date, day_count, traveler_count);
+    if (start_date.length == 0) {
+      date_error_message = "Please select a start date.";
+    } else if (!checkDateValidity(start_date)) {
+      date_error_message = "Please select a valid start date in future.";
+    } else {
+      date_error_message = "";
+      if (city_input_ok) show_error = false;
+    }
+  }
+
+  let cities: string[] = [];
+  data.cities.forEach((city: any) => {
+    cities.push(city.name + ", " + city.state + ", " + city.country);
+  });
   let filtered_cities: string[] = [];
 
   $: {
     if (city_input.length > 0 && city_input !== prev_city_input) {
       suggestion_open = true;
-      input_ok = false;
+      city_input_ok = false;
       prev_city_input = city_input;
       filtered_cities = cities.filter((city) =>
         city.toLowerCase().includes(city_input.toLowerCase())
       );
     }
   }
+
+  const checkDateValidity = (date: string) => {
+    let today = new Date();
+    let input_date = new Date(date);
+    if (input_date < today) {
+      return false;
+    }
+    return true;
+  };
 
   const makeMatchBold = (str: string) => {
     let match = city_input.toLowerCase();
@@ -73,7 +89,12 @@
   </Heading>
   <Label class="mb-2 space-y-2 text-base font-semibold text-primary-ink">
     <span>When does your tour start?</span>
-    <Input type="date" placeholder="Start Date" size="md" />
+    <Input
+      type="date"
+      placeholder="Start Date"
+      size="md"
+      bind:value={start_date}
+    />
   </Label>
 
   <Label for="partners" class="mb-2 text-base font-semibold text-primary-ink"
@@ -83,7 +104,7 @@
     <Input
       class="block w-full text-gray-900 border-gray-300 rounded-lg disabled:cursor-not-allowed disabled:opacity-50 pl-11 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 sm:text-base"
       readonly
-      value={day_count.toString()}
+      bind:value={day_count}
     />
     <button
       type="button"
@@ -112,7 +133,7 @@
     <Input
       class="block w-full text-gray-900 border-gray-300 rounded-lg disabled:cursor-not-allowed disabled:opacity-50 pl-11 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 sm:text-base"
       readonly
-      value={traveler_count.toString()}
+      bind:value={traveler_count}
     />
     <button
       type="button"
@@ -155,7 +176,7 @@
                 class="block w-full px-4 py-2 text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 on:click|stopPropagation={() => {
                   prev_city_input = city_input = city;
-                  input_ok = true;
+                  city_input_ok = true;
                   filtered_cities = [];
                 }}
               >
@@ -171,17 +192,23 @@
       type="button"
       class="z-0 fixed bottom-10 focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mx-auto dark:focus:ring-yellow-900"
       on:click={() => {
-        if (!input_ok) {
+        if (!city_input_ok) {
+          unique = {};
+          city_error_message = "Please select a city to travel.";
+          show_error = true;
+        } else if (date_error_message.length > 0) {
           unique = {};
           show_error = true;
-          return;
+          // error message is already set
         } else {
           show_error = false;
           plan_store.update((current_data) => {
             current_data.city = city_input;
+            current_data.start_date = start_date;
+            current_data.duration = day_count;
             return current_data;
           });
-          goto(`/newplan/destinations`);
+          goto("/newplan/destinations");
         }
       }}>Proceed</button
     >
@@ -189,7 +216,12 @@
       {#key unique}
         <Alert color="red" dismissable>
           <Icon name="info-circle-solid" slot="icon" class="w-4 h-4" />
-          You should select a city to travel.
+          {#if !city_input_ok}
+            You should select a city to travel.<br />
+          {/if}
+          {#if date_error_message.length > 0}
+            {date_error_message}
+          {/if}
         </Alert>
       {/key}
     {/if}
