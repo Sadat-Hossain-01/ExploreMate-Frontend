@@ -12,6 +12,9 @@
   --primary-ink: #000000;
   --accent-ink: #ffb703;
 
+  --primary-font: "Noto-sans", "Judson", serif;
+
   font-family: "Noto-sans", "Judson", serif;
   font-family: "Ubuntu", sans-serif;
+
 }

@@ -10,7 +10,7 @@
 
 <div class="grow bg-primary-col">
     <div class="w-full pb-2 sticky top-[60px] z-10">
-        <Breadcrumb solid>
+        <!-- <Breadcrumb solid>
             {#each Array(choice_level + 1) as _, i}
                 <BreadcrumbItem
                     href={hashmap[i]?.[1]}
@@ -20,7 +20,7 @@
                     {hashmap[i]?.[0]}
                 </BreadcrumbItem>
             {/each}
-        </Breadcrumb>
+        </Breadcrumb> -->
     </div>
     <slot />
 </div>
