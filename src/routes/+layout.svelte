@@ -1,14 +1,14 @@
 <!-- this will be a common part of all the pages -->
 
 <script>
-    import Header from "./Header.svelte";
-    import "./styles.css";
-    import "../app.css";
+  import Header from "./Header.svelte";
+  import "./styles.css";
+  import "../app.css";
 </script>
 
 <div class="flex flex-col min-h-screen">
-    <Header />
-    <div class="grow bg-primary-col">
-        <slot />
-    </div>
+  <Header />
+  <div class="grow bg-primary-col">
+    <slot />
+  </div>
 </div>

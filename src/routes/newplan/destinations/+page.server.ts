@@ -3,6 +3,7 @@ import server_store from "$lib/stores/serverstore";
 
 let current_city: string = "";
 let server_url: string = "";
+let choice_level: number = 0;
 
 plan_store.subscribe((plan) => {
   current_city = plan.city;
@@ -34,6 +35,7 @@ export async function load() {
       };
     }
   } catch (err) {
+    console.log("found error");
     throw err;
   }
 }

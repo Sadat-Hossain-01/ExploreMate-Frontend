@@ -14,10 +14,11 @@
   import { page } from "$app/stores";
   import user_store from "$lib/stores/userstore";
   import type { User } from "$lib/interfaces/user";
+  import plan_store from "$lib/stores/planstore";
 
   let current_user: User = {
-    userid: "",
-    username: "",
+    id: "",
+    name: "",
     email: "",
     avatar_link: "",
   };
@@ -35,7 +36,12 @@
   ];
 </script>
 
-<Navbar let:hidden let:toggle class="bg-primary-col">
+<Navbar
+  let:hidden
+  let:toggle
+  class="bg-white fixed z-10"
+  navClass={"px-2 sm:px-4 py-1 w-full"}
+>
   <NavBrand href="/">
     <img
       src="https://flowbite.com/docs/images/logo.svg"
@@ -48,10 +54,7 @@
     >
   </NavBrand>
   <div class="flex items-center md:order-2">
-    <Avatar
-      id="avatar-menu"
-      src={current_user.avatar_link}
-    />
+    <Avatar id="avatar-menu" src={current_user.avatar_link} />
     <NavHamburger
       on:click={toggle}
       class1="w-full md:flex md:w-auto md:order-1"
@@ -59,7 +62,7 @@
   </div>
   <Dropdown placement="bottom" triggeredBy="#avatar-menu">
     <DropdownHeader>
-      <span class="block text-sm">{current_user.username}</span>
+      <span class="block text-sm">{current_user.name}</span>
       <span class="block text-sm font-medium truncate"
         >{current_user.email}</span
       >

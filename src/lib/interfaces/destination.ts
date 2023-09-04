@@ -5,7 +5,7 @@ export interface Destination {
     state_id: number;
     city_id: number;
     description: string;
-    photo_link: string;
+    img_url: string;
     rating: number;
     rating_count: number;
     estimated_cost: number;

@@ -8,6 +8,8 @@ const plan_store = writable<Plan>({
     duration: 0,
     destinations: [],
     events: [],
+    activities: [],
+    choice_level: 0
 });
 
 export default plan_store;

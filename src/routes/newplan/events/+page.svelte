@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Event } from "$lib/interfaces/event";
+  import type { Activity } from "$lib/interfaces/activity";
   import plan_store from "$lib/stores/planstore";
   import Eventcard from "./eventcard.svelte";
   import { Search } from "flowbite-svelte";
@@ -131,6 +132,51 @@
           </div>
         </div>
       </div>
+
+      <!-- copy starts here -->
+      <div class="px-3 mt-0 mb-8 md:px-12">
+        <div class="flex flex-col justify-start gap-4">
+          <h2 class="text-3xl font-bold md:text-4xl">
+            Top Events in {city}
+          </h2>
+        </div>
+        <p class="mt-4 text-base primary-text-ink md:text-lg">
+          Select the events you would like to include for your visit to {city}
+        </p>
+      </div>
+      <div class="flex flex-grow px-3 pb-12 md:px-12">
+        <div class="w-full">
+          <div class="flex items-stretch gap-2 mb-8 md:gap-3">
+            <div class="relative w-full basis-10/12">
+              <Search bind:value={event_input} placeholder={"Search Events"} />
+            </div>
+            <div class="w-full basis-2/12">
+              <button
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium rounded-md bg-accent-col text-primary-ink hover:bg-yellow-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                on:click={() => {
+                  show_selected = !show_selected;
+                }}
+              >
+                <span class="hidden h-full whitespace-nowrap md:block"
+                  >{show_selected
+                    ? "Show Suggestions"
+                    : "Show Selections"}</span
+                >
+              </button>
+            </div>
+          </div>
+          <div>
+            <div
+              class="grid grid-flow-row-dense grid-cols-1 gap-4 pb-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2"
+            >
+              {#each showable_events as event}
+                <Eventcard bind:event />
+              {/each}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- copy ends here -->
     </div>
   </section>
   <section
