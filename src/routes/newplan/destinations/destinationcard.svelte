@@ -63,7 +63,9 @@
                 {destination.rating}
               </p>
             </Rating>
-            <p class="text-sm text-gray-60">69 Ratings</p>
+            <p class="text-sm text-gray-60">
+              {destination.rating_count} Ratings
+            </p>
           </div>
           <p class="mb-5 mt-2.5 line-clamp-2 text-sm">
             {shorten_text(destination.description, 100)}

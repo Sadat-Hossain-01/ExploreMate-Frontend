@@ -22,5 +22,7 @@
       {/each}
     </Breadcrumb>
   </div>
-  <slot />
+  <div class="mt-20">
+    <slot />
+  </div>
 </div>

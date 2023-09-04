@@ -7,6 +7,7 @@ let choice_level: number = 0;
 
 plan_store.subscribe((plan) => {
   current_city = plan.city;
+  // console.log("current city: " + current_city);
 });
 
 server_store.subscribe((url: string) => {

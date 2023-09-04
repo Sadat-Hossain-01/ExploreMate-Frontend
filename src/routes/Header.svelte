@@ -39,7 +39,7 @@
 <Navbar
   let:hidden
   let:toggle
-  class="bg-white fixed z-10"
+  class="bg-primary-col fixed z-10"
   navClass={"px-2 sm:px-4 py-1 w-full"}
 >
   <NavBrand href="/">
