@@ -3,7 +3,6 @@
   import plan_store from "$lib/stores/planstore";
   import { goto } from "$app/navigation";
   import { Icon } from "flowbite-svelte-icons";
-  import { onMount } from "svelte";
   export let data;
 
   let unique = {};
@@ -206,7 +205,7 @@
       } else {
         show_error = false;
         plan_store.update((current_data) => {
-          current_data.city = city_input;
+          current_data.city = city_input.split(",")[0].trim();
           current_data.start_date = start_date;
           current_data.duration = day_count;
           current_data.choice_level = 1;
