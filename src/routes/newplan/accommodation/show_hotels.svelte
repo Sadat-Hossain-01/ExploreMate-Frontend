@@ -68,7 +68,7 @@
       </div>
       <div>
         <div
-          class="grid grid-flow-row-dense grid-cols-1 gap-4 pb-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2"
+          class="grid grid-flow-row-dense grid-cols-2 gap-4 pb-6 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4"
         >
           {#each showable_hotels as hotel}
             <HotelCard bind:hotel />

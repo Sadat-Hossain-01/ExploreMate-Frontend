@@ -8,7 +8,8 @@ let server_url: string = "";
 plan_store.subscribe((plan) => {
   desired_cities = plan.cities;
   if (desired_cities.length == 0) {
-    throw redirect(307, "/newplan");
+    desired_cities = ["Sylhet"];
+    // throw redirect(307, "/newplan");
   }
 });
 

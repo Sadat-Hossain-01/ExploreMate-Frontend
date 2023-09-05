@@ -2,12 +2,15 @@
   import type { Destination } from "$lib/interfaces/destination";
   import type { MapItem } from "$lib/interfaces/mapitem";
   import plan_store from "$lib/stores/planstore";
+  import { goto } from "$app/navigation";
   import Destinationcard from "./destination_card.svelte";
   import { Search } from "flowbite-svelte";
   import Map from "../map.svelte";
   export let data;
 
   let search_input: string = "";
+
+  $plan_store.choice_level = 1;
 
   let destination_suggestions: Array<Destination> = data.destinations;
   let destination_selections: Array<Destination> = [];
@@ -62,7 +65,7 @@
           Select the destinations you would like to include for your visit
         </p>
       </div>
-      <div class="flex flex-grow px-3 pb-52 md:px-12">
+      <div class="flex flex-grow px-3 pb-10 md:px-12">
         <div class="w-full">
           <div class="flex items-stretch gap-2 mb-8 md:gap-3">
             <div class="relative w-full basis-10/12">
@@ -97,6 +100,13 @@
           </div>
         </div>
       </div>
+      <button
+        type="button"
+        class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mx-auto dark:focus:ring-yellow-900 mb-5"
+        on:click|stopPropagation={() => {
+          goto("/newplan/food");
+        }}>Proceed</button
+      >
     </div>
   </section>
   <section

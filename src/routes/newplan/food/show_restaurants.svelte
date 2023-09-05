@@ -1,12 +1,18 @@
 <script lang="ts">
   import type { Restaurant } from "$lib/interfaces/restaurant";
   import { Search } from "flowbite-svelte";
+  import { Range, Label } from "flowbite-svelte";
+
   import RestaurantCard from "./restaurant_card.svelte";
   import plan_store from "$lib/stores/planstore";
+  import { goto } from "$app/navigation";
 
   export let suggested_restaurants: Array<Restaurant>;
 
+  $plan_store.choice_level = 2;
+
   let restaurant_input: string = "";
+  let value: number = 1;
 
   let restaurant_suggestions: Array<Restaurant> = suggested_restaurants;
   let restaurant_selections: Array<Restaurant> = [];
@@ -33,6 +39,13 @@
     else if (!show_selected_restaurants && restaurant_input.length > 0)
       showable_restaurants = filtered_restaurant_suggestions;
     else showable_restaurants = restaurant_suggestions;
+
+    showable_restaurants.sort((a: any, b: any) => {
+      if (a.rating > b.rating) return -1;
+      else if (a.rating < b.rating) return 1;
+      else return 0;
+    });
+
     $plan_store.restaurants = restaurant_selections;
   }
 </script>
@@ -40,22 +53,39 @@
 <div class="relative flex flex-col">
   <div class="px-3 mt-12 mb-8 md:px-12">
     <div class="flex flex-col justify-start gap-4">
-      <h2 class="text-3xl font-bold md:text-4xl">Top Restaurants to Eat</h2>
+      <h2 class="text-3xl font-bold md:text-4xl">Meal Preferences</h2>
     </div>
+    <span>
+      <Label class="text-2xl font-bold mt-5 mb-2" for="range-minmax"
+        >Price Range:</Label
+      >
+      <div>
+        Depending on budget level, we will calculate the estimated cost and
+        suggest restaurants.
+      </div>
+      <div class="flex flex-col justify-start gap-4 w-1/2 mt-3">
+        <Range id="range-minmax" min="0" max="2" bind:value />
+        <div class="flex justify-between">
+          <span class="text-sm">Low</span>
+          <span class="text-sm">Mid</span>
+          <span class="text-sm">High</span>
+        </div>
+      </div>
+    </span>
     <p class="mt-4 text-base primary-text-ink md:text-lg">
-      Select the restaurants you would like to have a taste of
+      Select the restaurants you would like to include in your trip.
     </p>
   </div>
-  <div class="flex flex-grow px-3 pb-52 md:px-12">
+  <div class="flex flex-grow px-3 pb-10 md:px-12">
     <div class="w-full">
       <div class="flex items-stretch gap-2 mb-8 md:gap-3">
-        <div class="relative w-full basis-10/12">
+        <div class="relative w-full basis-4/12">
           <Search
             bind:value={restaurant_input}
             placeholder={"Search Restaurants"}
           />
         </div>
-        <div class="w-full basis-2/12">
+        <div class="w-full basis-1/12">
           <button
             class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium rounded-md bg-accent-col text-primary-ink hover:bg-yellow-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
             on:click={() => {
@@ -72,7 +102,7 @@
       </div>
       <div>
         <div
-          class="grid grid-flow-row-dense grid-cols-1 gap-4 pb-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2"
+          class="grid grid-flow-row-dense grid-cols-2 gap-4 pb-6 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4"
         >
           {#each showable_restaurants as restaurant}
             <RestaurantCard bind:restaurant />
@@ -81,4 +111,11 @@
       </div>
     </div>
   </div>
+  <button
+    type="button"
+    class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mx-auto dark:focus:ring-yellow-900 mb-5"
+    on:click|stopPropagation={() => {
+      goto("/newplan/accommodation");
+    }}>Proceed</button
+  >
 </div>

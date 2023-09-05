@@ -29,6 +29,8 @@
     city_suggestions.push(city.name + ", " + city.state + ", " + city.country);
   });
 
+  $plan_store.choice_level = 0;
+
   $: {
     filtered_suggestions = city_suggestions.filter(
       (city) =>
@@ -51,10 +53,7 @@
   const checkDateValidity = (date: string) => {
     let today = new Date();
     let input_date = new Date(date);
-    if (input_date < today) {
-      return false;
-    }
-    return true;
+    return input_date >= today;
   };
 
   const makeMatchBold = (str: string) => {
@@ -241,7 +240,6 @@
           current_data.traveler_count = traveler_count;
           current_data.start_date = start_date;
           current_data.duration = day_count;
-          current_data.choice_level = 1;
           return current_data;
         });
         goto("/newplan/destinations");

@@ -11,6 +11,7 @@ const plan_store = writable<Plan>({
     activities: [],
     hotels: [],
     restaurants: [],
+    food_choice: 0,
     choice_level: 0,
     traveler_count: 0,
 });

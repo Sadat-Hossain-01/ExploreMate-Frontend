@@ -13,6 +13,7 @@ export interface Plan {
     activities: Activity[];
     hotels: Hotel[],
     restaurants: Restaurant[],
+    food_choice: number; // 0 for low, 1 for medium, 2 for high
     choice_level: number;
     traveler_count: number;
 }

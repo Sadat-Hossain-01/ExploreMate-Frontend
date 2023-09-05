@@ -27,24 +27,10 @@ export async function load() {
             },
             body: JSON.stringify({ destinations: selected_destinations }),
         });
-
-        const response_restaurant = await fetch(server_url + "/destination/restaurant", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ destinations: selected_destinations }),
-        });
-
-        if (response_hotel.ok && response_restaurant.ok) {
+        if (response_hotel.ok) {
             const data_hotel = await response_hotel.json();
-            const data_restaurant = await response_restaurant.json();
-
-            // console.log(data_hotel);
-            // console.log(data_restaurant);
             return {
                 hotels: data_hotel,
-                restaurants: data_restaurant,
             };
         }
     } catch (err) {

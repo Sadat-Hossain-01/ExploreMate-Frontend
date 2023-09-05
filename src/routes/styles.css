@@ -3,6 +3,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500&family=Noto+Serif:wght@500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
 :root {
   --primary-col: #edf2f4;
@@ -15,6 +16,6 @@
   --primary-font: "Noto-sans", "Judson", serif;
 
   font-family: "Noto-sans", "Judson", serif;
-  font-family: "Ubuntu", sans-serif;
+  font-family: "Roboto", "Ubuntu", sans-serif;
 
 }

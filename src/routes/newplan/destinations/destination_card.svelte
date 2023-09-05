@@ -72,13 +72,39 @@
             {shorten_text(destination.description, 100)}
           </p>
         </div>
-        <div class="flex justify-between text-base">
-          <p class=" text-blue-gray-400">
+        <div class="flex text-base flex-row">
+          <svg
+            class="w-6 h-6 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"
+            />
+          </svg>
+          <p class="text-blue-gray-400 mx-2">
             {destination.estimated_time.toString() + " hours"}
           </p>
-          <div class="ml-auto">
-            {"$" + destination.estimated_cost}
-          </div>
+          <svg
+            class="w-6 h-6 text-gray-800 dark:text-white ml-3 place-self-end"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 16"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
+            />
+          </svg>
+          <p class="text-blue-gray-400 mx-2">
+            ${destination.estimated_cost}
+          </p>
         </div>
       </div>
     </div>
