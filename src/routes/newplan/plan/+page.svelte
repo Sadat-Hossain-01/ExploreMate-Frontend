@@ -1,12 +1,15 @@
 <script lang="ts">
-    import { Accordion, GradientButton, Span } from "flowbite-svelte";
+    import { Accordion, Span } from "flowbite-svelte";
 
     import type { DayItem } from "$lib/interfaces/dayitem";
     import type { Day } from "$lib/interfaces/day";
+    import type { MapItem } from "$lib/interfaces/mapitem";
     import DayAccordian from "./day.svelte";
     import Map from "../map.svelte";
 
-    const dummy_daywise_plan: Day[] = [
+    let current_mapitems: MapItem[] = [];
+
+    let dummy_daywise_plan: Day[] = [
         {
             date: "2021-10-10",
             items: [
@@ -96,9 +99,29 @@
         },
     ];
 
-    const items = Array(dummy_daywise_plan.length).fill(false);
-    const open_all = () => items.forEach((_, i) => (items[i] = true));
-    const close_all = () => items.forEach((_, i) => (items[i] = false));
+    $: {
+    }
+
+    let open_status = Array(dummy_daywise_plan.length).fill(false);
+    const open_all = () =>
+        open_status.forEach((_, i) => (open_status[i] = true));
+    const close_all = () =>
+        open_status.forEach((_, i) => (open_status[i] = false));
+
+    $: {
+        current_mapitems = [];
+        dummy_daywise_plan.forEach((day, i) => {
+            if (open_status[i]) {
+                day.items.forEach((item) => {
+                    current_mapitems.push({
+                        name: item.name,
+                        lat: item.lat,
+                        lng: item.lng,
+                    });
+                });
+            }
+        });
+    }
 </script>
 
 <div class="flex">
@@ -130,7 +153,11 @@
         </div>
         <Accordion multiple>
             {#each dummy_daywise_plan as day, i}
-                <DayAccordian {day} is_open={items[i]} day_number={i} />
+                <DayAccordian
+                    {day}
+                    bind:is_open={open_status[i]}
+                    day_number={i}
+                />
             {/each}
         </Accordion>
     </div>
@@ -138,7 +165,7 @@
         class="fixed right-0 h-full w-full overflow-hidden border-l border-solid border-gray-200 transition-transform lg:w-[45%] translate-x-full md:block lg:translate-x-0"
     >
         <div id="map" class="relative flex flex-row-reverse w-full h-full">
-            <Map />
+            <Map bind:current_mapitems />
         </div>
     </div>
 </div>
