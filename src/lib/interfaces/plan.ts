@@ -3,13 +3,14 @@ import type { Event } from "./event";
 import type { Activity } from "./activity";
 
 export interface Plan {
-    city: string;
     start_date: string;
     duration: number;
+    cities: string[];
     destinations: Destination[];
     events: Event[];
     activities: Activity[];
     choice_level: number;
+    traveler_count: number;
 }
 
 export const hashmap: Record<number, [string, string]> = {

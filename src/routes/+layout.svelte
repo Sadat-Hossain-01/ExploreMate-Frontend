@@ -1,5 +1,3 @@
-<!-- this will be a common part of all the pages -->
-
 <script>
   import Header from "./Header.svelte";
   import "./styles.css";

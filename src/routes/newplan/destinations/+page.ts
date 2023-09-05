@@ -1,13 +1,15 @@
 import plan_store from "$lib/stores/planstore";
 import server_store from "$lib/stores/serverstore";
+import { redirect } from "@sveltejs/kit";
 
-let current_city: string = "";
+let desired_cities: string[] = [];
 let server_url: string = "";
-let choice_level: number = 0;
 
 plan_store.subscribe((plan) => {
-  current_city = plan.city;
-  // console.log("current city: " + current_city);
+  desired_cities = plan.cities;
+  if (desired_cities.length == 0) {
+    throw redirect(307, "/newplan");
+  }
 });
 
 server_store.subscribe((url: string) => {
@@ -21,7 +23,7 @@ export async function load() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ city: current_city }),
+      body: JSON.stringify({ cities: desired_cities }),
     });
 
     if (response.ok) {
