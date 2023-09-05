@@ -1,10 +1,11 @@
 <script lang="ts">
-  import type { Destination } from "$lib/interfaces/destination";
-  import plan_store from "$lib/stores/planstore";
-  import Destinationcard from "./destinationcard.svelte";
-  import { Search } from "flowbite-svelte";
-  import Map from "../map.svelte";
-  export let data;
+    import type { Destination } from "$lib/interfaces/destination";
+    import type { MapItem } from "$lib/interfaces/mapitem";
+    import plan_store from "$lib/stores/planstore";
+    import Destinationcard from "./destinationcard.svelte";
+    import { Search } from "flowbite-svelte";
+    import Map from "../map.svelte";
+    export let data;
 
   let search_input: string = "";
 
@@ -34,11 +35,20 @@
     else showable_destinations = destination_suggestions;
 
     $plan_store.destinations = destination_selections;
+    
+    current_mapitems = destination_selections.map((destination) => {
+    return {
+        name: destination.name,
+        lat: destination.lat,
+        lng: destination.lng,
+    };
+});
   }
+
 </script>
 
 <svelte:head>
-  <title>Choose Destinations</title></svelte:head
+    <title>Choose Destinations</title></svelte:head
 >
 
 <div class="z-50 flex flex-col-reverse lg:flex-row">
@@ -61,39 +71,49 @@
                 placeholder={"Search Destinations"}
               />
             </div>
-            <div class="w-full basis-2/12">
-              <button
-                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium rounded-md bg-accent-col text-primary-ink hover:bg-yellow-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-                on:click={() => {
-                  show_selected_ones = !show_selected_ones;
-                }}
-              >
-                <span class="hidden h-full whitespace-nowrap md:block"
-                  >{show_selected_ones
-                    ? "Show Suggestions"
-                    : "Show Selections"}</span
-                >
-              </button>
+            <div class="flex flex-grow px-3 pb-52 md:px-12">
+                <div class="w-full">
+                    <div class="flex items-stretch gap-2 mb-8 md:gap-3">
+                        <div class="relative w-full basis-10/12">
+                            <Search
+                                bind:value={search_input}
+                                placeholder={"Search Destinations"}
+                            />
+                        </div>
+                        <div class="w-full basis-2/12">
+                            <button
+                                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium rounded-md bg-accent-col text-primary-ink hover:bg-yellow-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                                on:click={() => {
+                                    show_selected_ones = !show_selected_ones;
+                                }}
+                            >
+                                <span
+                                    class="hidden h-full whitespace-nowrap md:block"
+                                    >{show_selected_ones
+                                        ? "Show Suggestions"
+                                        : "Show Selections"}</span
+                                >
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <div
+                            class="grid grid-flow-row-dense grid-cols-1 gap-4 pb-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2"
+                        >
+                            {#each showable_destinations as destination}
+                                <Destinationcard bind:destination />
+                            {/each}
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div>
-            <div
-              class="grid grid-flow-row-dense grid-cols-1 gap-4 pb-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2"
-            >
-              {#each showable_destinations as destination}
-                <Destinationcard bind:destination />
-              {/each}
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
-  <section
-    class="fixed right-0 h-full w-full overflow-hidden border-l border-solid border-gray-200 transition-transform lg:w-[45%] translate-x-full md:block lg:translate-x-0"
-  >
-    <div id="map" class="relative flex flex-row-reverse w-full h-full">
-      <Map />
-    </div>
-  </section>
+    </section>
+    <section
+        class="fixed right-0 h-full w-full overflow-hidden border-l border-solid border-gray-200 transition-transform lg:w-[45%] translate-x-full md:block lg:translate-x-0"
+    >
+        <div id="map" class="relative flex flex-row-reverse w-full h-full">
+            <Map bind:current_mapitems />
+        </div>
+    </section>
 </div>

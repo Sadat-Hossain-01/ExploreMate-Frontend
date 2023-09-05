@@ -1,26 +1,30 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import plan_store from "$lib/stores/planstore";
-    import type { Plan } from "$lib/interfaces/plan";
+    import type { MapItem } from "$lib/interfaces/mapitem";
 
-    let container : HTMLDivElement;
-    let map : google.maps.Map;
-    let markers : google.maps.Marker[] = [];
+    export let current_mapitems: MapItem[];
+
+    let container: HTMLDivElement;
+    let map: google.maps.Map;
+    let markers: google.maps.Marker[] = [];
     let zoom = 8;
-    let center = { lat: 23.6850, lng: 90.3563 };
+    let center = { lat: 23.685, lng: 90.3563 };
 
-    function update_map(data : Plan) {
+    function update_map() {
         markers.forEach((marker) => {
             marker.setMap(null);
         });
         markers = [];
-
-        data.destinations.forEach((destination) => {
+        current_mapitems.forEach((current_mapitem) => {
             let marker = new google.maps.Marker({
-                position: { lat: destination.lat, lng: destination.lng },
+                title: current_mapitem.name,
+                position: {
+                    lat: current_mapitem.lat,
+                    lng: current_mapitem.lng,
+                },
                 map: map,
                 label: {
-                    text: destination.name,
+                    text: current_mapitem.name,
                     color: "black",
                     fontFamily: "Judson",
                     fontSize: "18px",
@@ -34,11 +38,9 @@
             markers.push(marker);
         });
 
-        if (map && data.destinations.length > 0) {
-            map.setCenter({
-                lat: data.destinations[data.destinations.length - 1].lat,
-                lng: data.destinations[data.destinations.length - 1].lng,
-            });
+        // set the center of the map to the last updated destination
+        if (map && markers.length > 0) {
+            map.setCenter(markers[markers.length - 1].getPosition());
         }
     }
 
@@ -47,12 +49,13 @@
             zoom: zoom,
             center: center,
         });
-        update_map($plan_store);
+        update_map();
     });
 
-    plan_store.subscribe((data) => {
-        update_map(data);
-    });
+    $: {
+        current_mapitems = current_mapitems;
+        update_map();
+    }
 </script>
 
 <div class="full-screen" bind:this={container} />

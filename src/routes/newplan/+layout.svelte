@@ -5,6 +5,7 @@
 </script>
 
 <div class="grow bg-primary-col">
+
   <div class="w-full pb-2 sticky top-[60px] z-10 pt-5 pl-5 bg-primary-col">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
       {#each Array($plan_store.choice_level + 1) as _, i}
@@ -46,4 +47,5 @@
     </ol>
   </div>
   <slot />
+
 </div>

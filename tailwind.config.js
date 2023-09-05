@@ -22,6 +22,8 @@ const config = {
         "primary-ink": "var(--primary-ink)",
         "accent-ink": "var(--accent-ink)",
 
+        "primary-font": "var(--primary-font)",
+
         // flowbite-svelte
         primary: {
           50: "#FFF5F2",
