@@ -46,12 +46,10 @@
     <div class="relative flex flex-col">
       <div class="px-3 mt-12 mb-8 md:px-12">
         <div class="flex flex-col justify-start gap-4">
-          <h2 class="text-3xl font-bold md:text-4xl">
-            Top Sights in {$plan_store.city}
-          </h2>
+          <h2 class="text-3xl font-bold md:text-4xl">Top Destinations</h2>
         </div>
         <p class="mt-4 text-base primary-text-ink md:text-lg">
-          Select the destinations you would like to include for your visit to {$plan_store.city}
+          Select the destinations you would like to include for your visit
         </p>
       </div>
       <div class="flex flex-grow px-3 pb-52 md:px-12">

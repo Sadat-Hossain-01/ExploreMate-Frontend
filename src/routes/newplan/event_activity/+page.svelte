@@ -164,12 +164,10 @@
     <div class="relative flex flex-col">
       <div class="px-3 mt-12 mb-8 md:px-12">
         <div class="flex flex-col justify-start gap-4">
-          <h2 class="text-3xl font-bold md:text-4xl">
-            Top Events in {$plan_store.city}
-          </h2>
+          <h2 class="text-3xl font-bold md:text-4xl">Top Events to Attend</h2>
         </div>
         <p class="mt-4 text-base primary-text-ink md:text-lg">
-          Select the events you would like to visit for your visit to {$plan_store.city}
+          Select the events you would like to visit for your visit
         </p>
       </div>
       <div class="flex flex-grow px-3 pb-52 md:px-12">
@@ -211,11 +209,11 @@
       <div class="px-3 mt-12 mb-8 md:px-12">
         <div class="flex flex-col justify-start gap-4">
           <h2 class="text-3xl font-bold md:text-4xl">
-            Top Activities in {$plan_store.city}
+            Top Activities to Explore
           </h2>
         </div>
         <p class="mt-4 text-base primary-text-ink md:text-lg">
-          Select the activities you would like to explore for your visit to {$plan_store.city}
+          Select the activities you would like to explore for your visit
         </p>
       </div>
       <div class="flex flex-grow px-3 pb-52 md:px-12">

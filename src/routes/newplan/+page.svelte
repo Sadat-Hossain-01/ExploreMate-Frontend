@@ -1,51 +1,51 @@
 <script lang="ts">
-  import { Input, Label, Search, Heading, Span, Alert } from "flowbite-svelte";
+  import {
+    Input,
+    Label,
+    Search,
+    Heading,
+    Span,
+    Alert,
+    Badge,
+  } from "flowbite-svelte";
   import plan_store from "$lib/stores/planstore";
   import { goto } from "$app/navigation";
   import { Icon } from "flowbite-svelte-icons";
   export let data;
 
-  let unique = {};
-
-  let prev_city_input: string = "";
+  let unique: any = {};
   let city_input: string = "";
-  let city_input_ok: boolean = false;
+  let city_selections: string[] = [];
+  let filtered_suggestions: string[] = [];
+  let city_suggestions: string[] = [];
+  let city_suggestion_open: boolean = false;
+
   let traveler_count: number = 0;
   let day_count: number = 3;
-  let suggestion_open: boolean = false;
   let show_error: boolean = false;
   let start_date: string = "";
   let date_error_message: string = "";
-  let city_error_message: string = "";
+  data.cities.forEach((city: any) => {
+    city_suggestions.push(city.name + ", " + city.state + ", " + city.country);
+  });
 
   $: {
-    // console.log(start_date, day_count, traveler_count);
-    if (start_date.length == 0) {
-      date_error_message = "Please select a start date.";
-    } else if (!checkDateValidity(start_date)) {
-      date_error_message = "Please select a valid start date in future.";
-    } else {
-      date_error_message = "";
-      if (city_input_ok) show_error = false;
-    }
+    filtered_suggestions = city_suggestions.filter(
+      (city) =>
+        city.toLowerCase().includes(city_input.toLowerCase()) &&
+        !city_selections.includes(city.split(",")[0].trim())
+    );
+    filtered_suggestions = filtered_suggestions.slice(0, 5);
+    if (city_input.length > 0) city_suggestion_open = true;
+    else city_suggestion_open = false;
   }
 
-  let cities: string[] = [];
-  data.cities.forEach((city: any) => {
-    cities.push(city.name + ", " + city.state + ", " + city.country);
-  });
-  let filtered_cities: string[] = [];
-
   $: {
-    if (city_input.length > 0 && city_input !== prev_city_input) {
-      suggestion_open = true;
-      city_input_ok = false;
-      prev_city_input = city_input;
-      filtered_cities = cities.filter((city) =>
-        city.toLowerCase().includes(city_input.toLowerCase())
-      );
-      filtered_cities = filtered_cities.slice(0, 7);
-    }
+    if (start_date.length == 0)
+      date_error_message = "Please select a start date.";
+    else if (!checkDateValidity(start_date))
+      date_error_message = "Please select a valid start date in future.";
+    else date_error_message = "";
   }
 
   const checkDateValidity = (date: string) => {
@@ -74,7 +74,9 @@
 <svelte:head>
   <title>Plan Your Trip</title>
 </svelte:head>
-<svelte:window on:click|stopPropagation={() => (suggestion_open = false)} />
+<svelte:window
+  on:click|stopPropagation={() => (city_suggestion_open = false)}
+/>
 
 <div class="flex flex-col w-1/3 h-screen pt-10 mx-auto my-5 space-y-3 relative">
   <Heading
@@ -88,11 +90,46 @@
   </Heading>
 
   <Label class="mb-2 space-y-2 text-base font-semibold text-primary-ink">
-    <span>Where do you want to go to?</span>
+    <span>Where do you want to go to?</span><br />
+    <div class="flex flex-row flex-wrap space-x-1">
+      {#each city_selections as selected_city}
+        <Badge dismissable large color="green"
+          >{selected_city}
+          <button
+            slot="close-button"
+            type="button"
+            class="inline-flex items-center p-1 ml-2 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-800 dark:hover:text-blue-300"
+            data-dismiss-target="#badge-dismiss-default"
+            aria-label="Remove"
+            on:click={() => {
+              city_selections.splice(city_selections.indexOf(selected_city), 1);
+              city_selections = city_selections;
+            }}
+          >
+            <svg
+              class="w-2 h-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+            <span class="sr-only">Remove badge</span>
+          </button>
+        </Badge>
+      {/each}
+    </div>
     <Search bind:value={city_input} placeholder={"Search Cities"} />
   </Label>
   <div>
-    {#if suggestion_open && city_input.length > 0 && filtered_cities.length > 0}
+    {#if city_suggestion_open && city_input.length > 0 && filtered_suggestions.length > 0}
       <div
         id="dropdown"
         class="absolute z-20 w-full bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700"
@@ -101,14 +138,15 @@
           class="w-full py-1 text-base text-gray-700 dark:text-gray-200"
           aria-labelledby="dropdownDefault"
         >
-          {#each filtered_cities as city}
+          {#each filtered_suggestions as city}
             <li>
               <button
                 class="block w-full px-4 py-2 text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 on:click|stopPropagation={() => {
-                  prev_city_input = city_input = city;
-                  city_input_ok = true;
-                  filtered_cities = [];
+                  city_selections.push(city.split(",")[0].trim());
+                  city_input = "";
+                  city_selections = city_selections;
+                  filtered_suggestions = [];
                 }}
               >
                 {@html makeMatchBold(city)}
@@ -190,18 +228,17 @@
     type="button"
     class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mx-auto dark:focus:ring-yellow-900"
     on:click|stopPropagation={() => {
-      if (!city_input_ok) {
+      if (city_selections.length == 0) {
         unique = {};
-        city_error_message = "Please select a city to travel.";
         show_error = true;
       } else if (date_error_message.length > 0) {
         unique = {};
         show_error = true;
-        // error message is already set
       } else {
         show_error = false;
         plan_store.update((current_data) => {
-          current_data.city = city_input.split(",")[0].trim();
+          current_data.cities = city_selections;
+          current_data.traveler_count = traveler_count;
           current_data.start_date = start_date;
           current_data.duration = day_count;
           current_data.choice_level = 1;
@@ -215,7 +252,7 @@
     {#key unique}
       <Alert color="red" dismissable>
         <Icon name="info-circle-solid" slot="icon" class="w-4 h-4" />
-        {#if !city_input_ok}
+        {#if city_selections.length == 0}
           You should select a city to travel.<br />
         {/if}
         {#if date_error_message.length > 0}
