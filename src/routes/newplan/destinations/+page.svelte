@@ -2,7 +2,7 @@
   import type { Destination } from "$lib/interfaces/destination";
   import type { MapItem } from "$lib/interfaces/mapitem";
   import plan_store from "$lib/stores/planstore";
-  import Destinationcard from "./destinationcard.svelte";
+  import Destinationcard from "./destination_card.svelte";
   import { Search } from "flowbite-svelte";
   import Map from "../map.svelte";
   export let data;

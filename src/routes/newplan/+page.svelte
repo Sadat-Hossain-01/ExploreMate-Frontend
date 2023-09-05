@@ -20,7 +20,7 @@
   let city_suggestions: string[] = [];
   let city_suggestion_open: boolean = false;
 
-  let traveler_count: number = 0;
+  let traveler_count: number = 2;
   let day_count: number = 3;
   let show_error: boolean = false;
   let start_date: string = "";

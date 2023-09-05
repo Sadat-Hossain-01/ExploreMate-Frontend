@@ -1,6 +1,8 @@
 import type { Destination } from "./destination";
 import type { Event } from "./event";
 import type { Activity } from "./activity";
+import type { Hotel } from "./hotel";
+import type { Restaurant } from "./restaurant";
 
 export interface Plan {
     start_date: string;
@@ -9,6 +11,8 @@ export interface Plan {
     destinations: Destination[];
     events: Event[];
     activities: Activity[];
+    hotels: Hotel[],
+    restaurants: Restaurant[],
     choice_level: number;
     traveler_count: number;
 }
