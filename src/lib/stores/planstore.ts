@@ -9,6 +9,8 @@ const plan_store = writable<Plan>({
     destinations: [],
     events: [],
     activities: [],
+    hotels: [],
+    restaurants: [],
     choice_level: 0,
     traveler_count: 0,
 });
