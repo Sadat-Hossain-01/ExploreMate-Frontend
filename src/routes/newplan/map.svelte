@@ -6,8 +6,8 @@
 
     let container: HTMLDivElement;
     let map: google.maps.Map;
+    let bounds: google.maps.LatLngBounds;
     let markers: google.maps.Marker[] = [];
-    let zoom = 8;
     let center = { lat: 23.685, lng: 90.3563 };
 
     function update_map() {
@@ -38,17 +38,22 @@
             markers.push(marker);
         });
 
-        // set the center of the map to the last updated destination
-        if (map && markers.length > 0) {
-            map.setCenter(markers[markers.length - 1].getPosition());
+        console.log("bounds", bounds);
+        if (bounds) {
+            markers.forEach((marker) => {
+                bounds.extend(marker.getPosition());
+            });
+        }
+        if (map) {
+            map.fitBounds(bounds);
         }
     }
 
     onMount(async () => {
         map = new google.maps.Map(container, {
-            zoom: zoom,
             center: center,
         });
+        bounds = new google.maps.LatLngBounds();
         update_map();
     });
 
