@@ -13,6 +13,7 @@
 
   let restaurant_input: string = "";
   let value: number = 1;
+  $: $plan_store.food_choice = value;
 
   let restaurant_suggestions: Array<Restaurant> = suggested_restaurants;
   let restaurant_selections: Array<Restaurant> = [];
@@ -24,6 +25,26 @@
     restaurant_selections = restaurant_suggestions.filter(
       (restaurant: any) => restaurant.selected
     );
+    $plan_store.restaurant_budget = 0;
+
+    let breakfast_avg: number = 0;
+    let lunch_avg: number = 0;
+    let dinner_avg: number = 0;
+    restaurant_selections.forEach((restaurant: any) => {
+      if (restaurant.breakfast_price != null)
+        breakfast_avg += restaurant.breakfast_price;
+      if (restaurant.lunch_price != null) lunch_avg += restaurant.lunch_price;
+      if (restaurant.dinner_price != null)
+        dinner_avg += restaurant.dinner_price;
+    });
+    if (breakfast_avg !== 0) breakfast_avg /= restaurant_selections.length;
+    if (lunch_avg !== 0) lunch_avg /= restaurant_selections.length;
+    if (dinner_avg !== 0) dinner_avg /= restaurant_selections.length;
+    $plan_store.restaurant_budget =
+      (breakfast_avg + lunch_avg + dinner_avg) *
+      $plan_store.duration *
+      $plan_store.traveler_count;
+
     filtered_restaurant_suggestions = restaurant_suggestions.filter(
       (restaurant: any) =>
         restaurant.name.toLowerCase().includes(restaurant_input.toLowerCase())

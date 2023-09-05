@@ -14,6 +14,11 @@ const plan_store = writable<Plan>({
     food_choice: 0,
     choice_level: 0,
     traveler_count: 0,
+    destination_budget: 0,
+    hotel_budget: 0,
+    restaurant_budget: 0,
+    activity_budget: 0,
+    event_budget: 0,
 });
 
 export default plan_store;
