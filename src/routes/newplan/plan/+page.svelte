@@ -6,8 +6,6 @@
   import Map from "../map.svelte";
   import plan_store from "$lib/stores/planstore";
   import type { DayItem } from "$lib/interfaces/dayitem";
-  import { routeAlgo } from "$lib/dynamic/routeAlgo";
-  import type { Plan } from "$lib/interfaces/plan";
 
   export let data: any;
 
@@ -15,11 +13,11 @@
   $plan_store.choice_progress = 5;
 
   // console.log(data);
-  console.log(data.plan.length);
-  console.log(data.plan);
-  console.log(data.plan[0]);
-  let dd: DayItem = data.plan[0].items[0];
-  console.log(dd);
+  // console.log(data.plan.length);
+  // console.log(data.plan);
+  // console.log(data.plan[0]);
+  // let dd: DayItem = data.plan[0].items[0];
+  // console.log(dd);
 
   // construct array of days from above data
   let all_days: Array<Day> = [];
