@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { Event } from "$lib/interfaces/event";
-  import { Rating } from "flowbite-svelte";
   export let event: Event;
 
   const shorten_text = (text: string, max_length: number) => {
@@ -10,6 +9,16 @@
     } else {
       return text;
     }
+  };
+
+  const format_date = (date: string) => {
+    let d: Date = new Date(date);
+    return d.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 </script>
 
@@ -55,22 +64,11 @@
               class="block py-3 text-sm underline text-tp-purple-2 md:hidden"
             />
           </div>
-          <div class="flex flex-wrap items-center gap-2 mt-1">
-            <Rating id="example-3" total={5} rating={event.rating}>
-              <p
-                slot="text"
-                class="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400"
-              >
-                {event.rating}/5
-              </p>
-            </Rating>
-            <p class="text-sm text-gray-60">{event.rating_count} Ratings</p>
-          </div>
           <p class="mb-5 mt-2.5 line-clamp-2 text-sm">
             {shorten_text(event.description, 100)}
           </p>
         </div>
-        <div class="flex justify-between text-base text-center font-bold">
+        <div class="flex justify-between text-base text-center font-bold mb-2">
           <div class="flex items-center gap-2 w-full">
             <svg
               class="w-6 h-6 text-gray-800 dark:text-white"
@@ -87,10 +85,24 @@
                 d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
               />
             </svg>
-            {event.minCost} - {event.maxCost} USD
+            ${event.minCost} - ${event.maxCost}
           </div>
         </div>
-        <div class="flex justify-between text-base text-center font-bold">
+        <div class="flex justify-between text-base text-center font-bold mb-2">
+          <div class="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 448 512"
+              ><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path
+                d="M152 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H64C28.7 64 0 92.7 0 128v16 48V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V192 144 128c0-35.3-28.7-64-64-64H344V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H152V24zM48 192h80v56H48V192zm0 104h80v64H48V296zm128 0h96v64H176V296zm144 0h80v64H320V296zm80-48H320V192h80v56zm0 160v40c0 8.8-7.2 16-16 16H320V408h80zm-128 0v56H176V408h96zm-144 0v56H64c-8.8 0-16-7.2-16-16V408h80zM272 248H176V192h96v56z"
+              /></svg
+            >
+            {format_date(event.startTime)}<br />
+            {format_date(event.endTime)}
+          </div>
+        </div>
+        <div class="flex justify-between text-base text-center font-bold mb-2">
           <div class="flex items-center gap-2">
             <svg
               class="w-6 h-6 text-gray-800 dark:text-white"
@@ -103,8 +115,7 @@
                 d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"
               />
             </svg>
-            {event.startTime}<br />
-            {event.endTime}
+            {event.estimated_time} hours
           </div>
         </div>
       </div>

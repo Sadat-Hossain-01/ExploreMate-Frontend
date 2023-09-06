@@ -29,6 +29,7 @@ export const hashmap: Record<number, [string, string]> = {
     0: ["City", "/newplan"],
     1: ["Destinations", "/newplan/destinations"],
     2: ["Food", "/newplan/food"],
-    3: ["Accomodation", "/newplan/accomodation"],
+    3: ["Accommodation", "/newplan/accommodation"],
     4: ["Events & Activities", "/newplan/event_activity"],
+    5: ["Itinerary", "/newplan/plan"]
 };

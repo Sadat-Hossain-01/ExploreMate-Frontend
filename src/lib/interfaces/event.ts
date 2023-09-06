@@ -8,8 +8,6 @@ export interface Event {
     minCost: number;
     maxCost: number;
     img_url: string;
-    rating: number;
-    rating_count: number;
     selected: boolean;
     destination_id: number;
 }

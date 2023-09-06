@@ -1,14 +1,24 @@
 <script lang="ts">
   import type { Activity } from "$lib/interfaces/activity";
-  import { Rating } from "flowbite-svelte";
   export let activity: Activity;
 
   const shorten_text = (text: string, max_length: number) => {
+    if (text == null) return "No description available";
     if (text.length > max_length) {
       return text.substring(0, max_length) + "...";
     } else {
       return text;
     }
+  };
+
+  const format_date = (date: string) => {
+    let d: Date = new Date(date);
+    return d.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 </script>
 
@@ -54,22 +64,11 @@
               class="block py-3 text-sm underline text-tp-purple-2 md:hidden"
             />
           </div>
-          <div class="flex flex-wrap items-center gap-2 mt-1">
-            <Rating id="example-3" total={5} rating={activity.rating}>
-              <p
-                slot="text"
-                class="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400"
-              >
-                {activity.rating}/5
-              </p>
-            </Rating>
-            <p class="text-sm text-gray-60">{activity.rating_count} Ratings</p>
-          </div>
           <p class="mb-5 mt-2.5 line-clamp-2 text-sm">
             {shorten_text(activity.description, 100)}
           </p>
         </div>
-        <div class="flex justify-between text-base text-center font-bold">
+        <div class="flex justify-between text-base text-center font-bold mb-2">
           <div class="flex items-center gap-2 w-full">
             <svg
               class="w-6 h-6 text-gray-800 dark:text-white"
@@ -86,7 +85,23 @@
                 d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
               />
             </svg>
-            {activity.minCost} - {activity.maxCost} USD
+            ${activity.minCost} - ${activity.maxCost}
+          </div>
+        </div>
+        <div class="flex justify-between text-base text-center font-bold mb-2">
+          <div class="flex items-center gap-2">
+            <svg
+              class="w-6 h-6 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"
+              />
+            </svg>
+            {activity.time} hours
           </div>
         </div>
       </div>

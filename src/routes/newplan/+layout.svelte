@@ -55,8 +55,8 @@
           $plan_store.activity_estimated_budget +
           $plan_store.event_estimated_budget +
           Number.EPSILON) *
-          100
-      ) / 100}
+          10000
+      ) / 10000}
     </div>
   </div>
   <slot />

@@ -14,6 +14,7 @@
   let filtered_activity_selections: Array<Activity> = []; // filtered based on input
   let showable_activities: Array<Activity> = [];
   let show_selected_activities: boolean = false;
+
   $: {
     activity_selections = activity_suggestions.filter(
       (activity: any) => activity.selected
@@ -25,13 +26,17 @@
     filtered_activity_selections = activity_selections.filter((activity: any) =>
       activity.name.toLowerCase().includes(activity_input.toLowerCase())
     );
-    if (show_selected_activities && activity_input.length > 0)
-      showable_activities = filtered_activity_selections;
-    else if (show_selected_activities && activity_input.length == 0)
-      showable_activities = activity_selections;
-    else if (!show_selected_activities && activity_input.length > 0)
-      showable_activities = filtered_activity_suggestions;
-    else showable_activities = activity_suggestions;
+
+    if (show_selected_activities) {
+      if (activity_input.length > 0)
+        showable_activities = filtered_activity_selections;
+      else showable_activities = activity_selections;
+    } else if (!show_selected_activities) {
+      if (activity_input.length > 0)
+        showable_activities = filtered_activity_suggestions;
+      else showable_activities = activity_suggestions;
+    }
+
     $plan_store.activities = activity_selections;
   }
 </script>
@@ -45,7 +50,7 @@
       Select the activities you would like to explore for your visit
     </p>
   </div>
-  <div class="flex flex-grow px-3 pb-52 md:px-12">
+  <div class="flex flex-grow px-3 pb-10 md:px-12">
     <div class="w-full">
       <div class="flex items-stretch gap-2 mb-8 md:gap-3">
         <div class="relative w-full basis-10/12">
