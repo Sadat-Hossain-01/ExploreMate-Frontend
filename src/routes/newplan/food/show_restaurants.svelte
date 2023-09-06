@@ -22,6 +22,7 @@
   let filtered_restaurant_selections: Array<Restaurant> = []; // filtered based on input
   let showable_restaurants: Array<Restaurant> = [];
   let show_selected_restaurants: boolean = false;
+
   $: {
     restaurant_selections = restaurant_suggestions.filter(
       (restaurant: any) => restaurant.selected

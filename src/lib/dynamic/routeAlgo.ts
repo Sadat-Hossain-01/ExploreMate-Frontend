@@ -125,6 +125,7 @@ async function getNextHotel(
 }
 
 export async function routeAlgo(plan: Plan) {
+  console.log(plan);
   let days: Array<Day> = [];
   let current: Date = new Date(plan.start_date);
   let dayCount: number = 1;
@@ -136,8 +137,6 @@ export async function routeAlgo(plan: Plan) {
   } else {
     hotels = plan.hotels;
   }
-
-  console.log("Hotels: ", hotels, hotels[0]);
 
   if (plan.restaurants.length == 0) {
     restaurants = plan.all_restaurants;

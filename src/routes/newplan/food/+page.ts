@@ -11,8 +11,8 @@ plan_store.subscribe((plan) => {
     });
     if (plan.cities.length == 0)
         throw redirect(307, "/newplan");
-    else if (plan.destinations.length < 1)
-        throw redirect(307, "/newplan/destinations");
+    // else if (plan.destinations.length < 1)
+    //     throw redirect(307, "/newplan/destinations");
 });
 
 server_store.subscribe((url: string) => {
