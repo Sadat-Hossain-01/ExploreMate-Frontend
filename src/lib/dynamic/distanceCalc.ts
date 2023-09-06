@@ -4,6 +4,7 @@ let api_key: string =
   "access_token=pk.eyJ1Ijoic2hhdHRpayIsImEiOiJjbG02cW44bzkwbHVvM3FtbTVtM3F2anowIn0.HkzawX0-3a3geKX7LqooyA";
 let api_ano: string = "annotations=distance,duration";
 
+// using map api, gets the distance between two points
 export async function distanceClac(
   slat: number,
   slng: number,
@@ -29,18 +30,11 @@ export async function distanceClac(
       }
     );
 
-    if (response.ok) {
-      const data = await response.json();
-      return {
-        distance: data["distances"][0][1],
-        duration: data["durations"][0][1],
-      };
-    } else {
-      return {
-        status: response.status,
-        error: new Error("HTTP Error"),
-      };
-    }
+    const data = await response.json();
+    return {
+      distance: data["distances"][0][1],
+      duration: data["durations"][0][1],
+    };
   } catch (err) {
     throw err;
   }

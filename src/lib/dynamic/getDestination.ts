@@ -1,6 +1,7 @@
 import type { Destination } from "$lib/interfaces/destination";
 import { distanceClac } from "./distanceCalc";
 
+// return the nearest destination from the lat,long
 export async function getDestination(destinations : Array<Destination>, lat : number, lng : number): Promise<Destination> {
     let minDur : number = -1;
     let minDis : number = -1;

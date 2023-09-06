@@ -1,6 +1,7 @@
 import type { Event } from "$lib/interfaces/event";
 import type { Destination } from "$lib/interfaces/destination";
 
+// event list er moddhe jotogula event ache, segula theke destination id er sathe match kore event gula select kore return kore
 export async function getEvent(destination: Destination, events: Array<Event>): Promise<Array<Event>> {
     let selected = [];
     for (let i = 0; i < events.length; i++) {
@@ -11,6 +12,7 @@ export async function getEvent(destination: Destination, events: Array<Event>): 
     return selected;
 }
 
+// ajkei event ase kina check
 export async function mustEvent(events: Array<Event>, present: Date): Promise<Array<Event>> {
     let selected = [];
     for (let i = 0; i < events.length; i++) {
@@ -24,21 +26,19 @@ export async function mustEvent(events: Array<Event>, present: Date): Promise<Ar
     return selected;
 }
 
+// in future event ase kina check
 export async function isEligible(events: Array<Event>, destination: Destination, present: Date) {
     let selected = await getEvent(destination, events);
     let able = [];
     let unable = [];
     for (let i = 0; i < selected.length; i++) {
-        if (selected[i].destination_id !== destination.id) {
-            continue;
-        }
         let start: Date = new Date(selected[i].startTime);
         if (start <= present) {
-            able.push(selected[i]);
+            continue
         }
         else {
-            unable.push(selected[i]);
+            return false;
         }
     }
-    return { able, unable };
+    return true;
 }

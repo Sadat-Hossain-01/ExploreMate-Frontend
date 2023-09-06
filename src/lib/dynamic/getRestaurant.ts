@@ -1,6 +1,7 @@
 import type { Restaurant } from "$lib/interfaces/restaurant";
 import { distanceClac } from "./distanceCalc";
 
+// return the nearest restaurant from the lat,long
 export async function getRestaurant(restaurants : Array<Restaurant>, lat : number, lng : number): Promise<Restaurant> {
     let minDur : number = -1;
     let minDis : number = -1;
