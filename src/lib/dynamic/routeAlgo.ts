@@ -13,5 +13,5 @@ import type { DayItem } from "$lib/interfaces/dayitem";
 import type { Plan } from "$lib/interfaces/plan";
 
 export async function routeAlgo(plan: Plan) {
-
+    
 }
