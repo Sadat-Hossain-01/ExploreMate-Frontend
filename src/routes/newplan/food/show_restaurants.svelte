@@ -13,10 +13,47 @@
 
   let restaurant_input: string = "";
   let value: number = 2;
-  $: $plan_store.food_budget = value;
-  $plan_store.all_restaurants = suggested_restaurants;
 
   let restaurant_suggestions: Array<Restaurant> = suggested_restaurants;
+
+  // find out the threshold values for class division
+  let total_prices: Array<number> = [];
+  restaurant_suggestions.forEach((restaurant: Restaurant) => {
+    let total: number = 0;
+    if (restaurant.breakfast != null) total += restaurant.breakfast;
+    if (restaurant.lunch != null) total += restaurant.lunch;
+    if (restaurant.dinner != null) total += restaurant.dinner;
+    total_prices.push(total);
+  });
+  total_prices.sort((a: number, b: number) => a - b);
+  // console.log(total_prices);
+  let low_threshold: number =
+    total_prices[Math.floor(total_prices.length * 0.3)];
+  let mid_threshold: number =
+    total_prices[Math.floor(total_prices.length * 0.6)];
+
+  $: {
+    $plan_store.food_budget = value;
+    let left: number = 0;
+    let right: number = 0;
+    if (value == 1) right = low_threshold;
+    else if (value == 2) {
+      left = low_threshold;
+      right = mid_threshold;
+    } else if (value == 3) left = mid_threshold;
+
+    $plan_store.all_restaurants = restaurant_suggestions.filter(
+      (restaurant: Restaurant) => {
+        let total: number = 0;
+        if (restaurant.breakfast != null) total += restaurant.breakfast;
+        if (restaurant.lunch != null) total += restaurant.lunch;
+        if (restaurant.dinner != null) total += restaurant.dinner;
+        return total >= left && total <= right;
+      }
+    );
+    console.log($plan_store.all_restaurants);
+  }
+
   let restaurant_selections: Array<Restaurant> = [];
   let filtered_restaurant_suggestions: Array<Restaurant> = []; // filtered based on input
   let filtered_restaurant_selections: Array<Restaurant> = []; // filtered based on input
@@ -44,15 +81,7 @@
       showable_restaurants = filtered_restaurant_suggestions;
     else showable_restaurants = restaurant_suggestions;
 
-    showable_restaurants.sort((a: any, b: any) => {
-      if (a.rating > b.rating) return -1;
-      else if (a.rating < b.rating) return 1;
-      else return 0;
-    });
-
     $plan_store.restaurants = restaurant_selections;
-
-    // console.log("Plan Store Restaurants :", $plan_store.restaurants);
 
     $plan_store.restaurant_estimated_budget = 0;
 
@@ -85,9 +114,7 @@
       <Label class="text-2xl font-bold mt-5 mb-2" for="range-minmax"
         >Price Range:</Label
       >
-      <div>
-        Depending on budget level, we will calculate the estimated cost.
-      </div>
+      <div>This will be considered in final plan preparation.</div>
       <div class="flex flex-col justify-start gap-4 w-1/2 mt-3">
         <Range id="range-minmax" min="1" max="3" bind:value />
         <div class="flex justify-between">
@@ -98,7 +125,8 @@
       </div>
     </span>
     <p class="mt-4 text-base primary-text-ink md:text-lg">
-      Select the restaurants you would like to include in your trip.
+      Select the restaurants you would like to include in your trip. (Possibly
+      None)
     </p>
   </div>
   <div class="flex flex-grow px-3 pb-10 md:px-12">

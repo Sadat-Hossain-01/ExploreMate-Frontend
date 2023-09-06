@@ -25,8 +25,6 @@
   let all_days: Array<Day> = [];
   for (let i = 0; i < data.plan.length; i++) {
     let current_day: Day = data.plan[i];
-    current_day.date = data.plan[i].date;
-    current_day.items = data.plan[i].items;
     all_days.push(current_day);
   }
 

@@ -4,5 +4,6 @@ export interface DayItem {
     end_time: string;
     lat: number;
     lng: number;
+    estimated_cost: number;
     description: string;
 }

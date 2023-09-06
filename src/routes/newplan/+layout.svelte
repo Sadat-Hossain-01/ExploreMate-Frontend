@@ -33,14 +33,20 @@
                 >{hashmap[i]?.[0]}</span
               >
             {:else}
-              <a
+              <!-- <a
                 href={hashmap[i]?.[1]}
                 class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
                 on:click|stopPropagation={() => {
                   $plan_store.choice_progress = i;
                   goto(hashmap[i]?.[1]);
-                }}>{hashmap[i]?.[0]}</a
+                }}> -->
+              <p
+                class="ml-1 text-sm font-medium text-gray-700 md:ml-2 dark:text-gray-400"
               >
+                {hashmap[i]?.[0]}
+              </p>
+              <!-- </a
+              > -->
             {/if}
           </div>
         </li>
