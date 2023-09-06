@@ -12,4 +12,5 @@ export interface Restaurant {
     lat: number;
     lng: number;
     selected: boolean;
+    city_id: number;
 };
