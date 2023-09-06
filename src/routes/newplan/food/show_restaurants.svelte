@@ -12,7 +12,7 @@
   $plan_store.choice_level = 2;
 
   let restaurant_input: string = "";
-  let value: number = 1;
+  let value: number = 2;
   $: $plan_store.food_choice = value;
 
   let restaurant_suggestions: Array<Restaurant> = suggested_restaurants;
@@ -95,7 +95,7 @@
         Depending on budget level, we will calculate the estimated cost.
       </div>
       <div class="flex flex-col justify-start gap-4 w-1/2 mt-3">
-        <Range id="range-minmax" min="0" max="2" bind:value />
+        <Range id="range-minmax" min="1" max="3" bind:value />
         <div class="flex justify-between">
           <span class="text-sm">Low</span>
           <span class="text-sm">Mid</span>

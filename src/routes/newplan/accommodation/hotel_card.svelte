@@ -34,7 +34,7 @@
         <div>
           <div>
             <div class="flex items-center justify-between">
-              <h3 class="text-xl font-bold line-clamp-1">
+              <h3 class="text-xl font-extrabold line-clamp-1">
                 {hotel.name}
               </h3>
               <div class="relative -right-3">
@@ -55,15 +55,33 @@
               class="block py-3 text-sm underline text-tp-purple-2 md:hidden"
             />
           </div>
+          <a
+            href={hotel.site_url}
+            class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            target="_blank"
+          >
+            Site Link
+            <svg
+              class="w-4 h-4 ml-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 5h12m0 0L9 1m4 4L9 9"
+              />
+            </svg>
+          </a>
           <div class="flex flex-wrap items-center gap-2 mt-1">
-            <Rating id="example-3" total={5} rating={hotel.star}>
-              <p
-                slot="text"
-                class="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400"
-              >
-                {hotel.star}/5
-              </p>
-            </Rating>
+            <Rating id="example-3" total={5} rating={hotel.star} />
+            {#if hotel.comp_breakfast}
+              <i class="fa-solid fa-burger ml-5"> Breakfast </i>
+            {/if}
           </div>
           <p class="mb-5 mt-2.5 line-clamp-2 text-sm">
             {shorten_text(hotel.description, 100)}
@@ -86,7 +104,9 @@
                 d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
               />
             </svg>
-            <i class="fi fi-rr-user" />
+            <span>Budget: ${hotel.low}</span>
+            <span>Premium: ${hotel.mid}</span>
+            <span>Deluxe: ${hotel.high}</span>
           </div>
         </div>
       </div>
