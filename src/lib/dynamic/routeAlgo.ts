@@ -22,6 +22,10 @@ function convertTimeToNumber(time: string): number {
   return hour + minute / 60;
 }
 
+function roundToTwo(num: number): number {
+  return Math.round((num + Number.EPSILON) * 100) / 100;
+}
+
 // write a function to convert real number to string time in hh:mm format
 function convertNumberToTime(time: number): string {
   let hour: number = Math.floor(time);
@@ -107,7 +111,7 @@ async function getDayitemFromDest(
     lat: dest.lat,
     lng: dest.lng,
     description: description + ". Travel time: " + getStringFromSeconds(duration),
-    estimated_cost: dest.estimated_cost+cost+distance*transportCost/1000,
+    estimated_cost: roundToTwo(dest.estimated_cost+cost+distance*transportCost/1000),
   };
   return dayitem;
 }
@@ -278,7 +282,7 @@ export async function routeAlgo(plan: Plan) {
       lat: firstHotel.lat,
       lng: firstHotel.lng,
       description: "Leave hotel for breakfast",
-      estimated_cost: hotelCost*plan.buddy_count,
+      estimated_cost: roundToTwo(hotelCost*plan.buddy_count),
     };
     let dest = city_destinations[0];
     let lastPosLat: number = firstHotel.lat;
@@ -291,7 +295,7 @@ export async function routeAlgo(plan: Plan) {
         lat: firstHotel.lat,
         lng: firstHotel.lng,
         description: "Take complimentary breakfast in the hotel",
-        estimated_cost: hotelCost*plan.buddy_count,
+        estimated_cost: roundToTwo(hotelCost*plan.buddy_count),
       };
       time = 8.5;
       day.items.push(dayitem);
@@ -326,7 +330,7 @@ export async function routeAlgo(plan: Plan) {
         lat: restaurant.lat,
         lng: restaurant.lng,
         description: "Take breakfast in " + restaurant.name + ". Travel time: " + getStringFromSeconds(duration),
-        estimated_cost: restaurant.breakfast*plan.buddy_count+distance*transportCost/1000,
+        estimated_cost: roundToTwo(restaurant.breakfast*plan.buddy_count+distance*transportCost/1000),
       };
       time = time + duration / 3600 + 0.5;
       dest = await getDestination(
@@ -427,7 +431,7 @@ export async function routeAlgo(plan: Plan) {
         lat: firstHotel.lat,
         lng: firstHotel.lng,
         description:"Finish touring the city and check in to " + firstHotel.name + ". Travel time: " + getStringFromSeconds(clac.duration),
-        estimated_cost: clac.distance*transportCost/1000,
+        estimated_cost: roundToTwo(clac.distance*transportCost/1000),
       };
       time = time + clac.duration / 3600;
       day.items.push(dayitem);
@@ -459,7 +463,7 @@ export async function routeAlgo(plan: Plan) {
       lat: restaurant.lat,
       lng: restaurant.lng,
       description: "Take lunch in " + restaurant.name + ". Travel time: " + getStringFromSeconds(duration),
-      estimated_cost: restaurant.lunch*plan.buddy_count+distance*transportCost/1000,
+      estimated_cost: roundToTwo(restaurant.lunch*plan.buddy_count+distance*transportCost/1000),
     };
     time = time + duration / 3600 + 1;
     day.items.push(dayitem);
@@ -529,7 +533,7 @@ export async function routeAlgo(plan: Plan) {
         lng: firstHotel.lng,
         description:
           "Finish touring the city and check in to " + firstHotel.name + ". Travel time: " + getStringFromSeconds(clac.duration),
-        estimated_cost: clac.distance*transportCost/1000,
+        estimated_cost: roundToTwo(clac.distance*transportCost/1000),
       };
       time = time + clac.duration / 3600;
       day.items.push(dayitem);
@@ -561,7 +565,7 @@ export async function routeAlgo(plan: Plan) {
       lat: restaurant.lat,
       lng: restaurant.lng,
       description: "Take dinner in " + restaurant.name + ". Travel time: " + getStringFromSeconds(duration),
-      estimated_cost: restaurant.dinner*plan.buddy_count+distance*transportCost/1000,
+      estimated_cost: roundToTwo(restaurant.dinner*plan.buddy_count+distance*transportCost/1000),
     };
     time = time + duration / 3600 + 1;
     day.items.push(dayitem);
@@ -580,7 +584,7 @@ export async function routeAlgo(plan: Plan) {
       lat: firstHotel.lat,
       lng: firstHotel.lng,
       description: "Return to " + firstHotel.name + " and take rest. Travel time: " + getStringFromSeconds(duration),
-      estimated_cost: distance*transportCost/1000,
+      estimated_cost: roundToTwo(distance*transportCost/1000),
     };
     current.setDate(current.getDate() + 1);
     day.items.push(dayitem);
