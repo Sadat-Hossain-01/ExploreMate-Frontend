@@ -107,7 +107,13 @@ async function getNextHotel(
       }
     }
   }
-  let hotels = await hotelCity(dest.city_id, plan.star_choice);
+  let hotels: Array<Hotel> = await hotelCity(dest.city_id, plan.star_choice);
+  let temp = plan.star_choice;
+  while (hotels.length == 0) {
+    temp = ((temp + 1) % 5) + 1;
+    hotels = await hotelCity(dest.city_id, temp);
+  }
+
   // traverse through the firstHotelList check whether hotels array have that hotel or not, if has, then firstHotel = that hotel
   let flag: boolean = false;
   for (let i = 0; i < hotels.length; i++) {
@@ -125,11 +131,13 @@ async function getNextHotel(
 }
 
 export async function routeAlgo(plan: Plan) {
+  console.log(plan);
   let days: Array<Day> = [];
   let current: Date = new Date(plan.start_date);
   let dayCount: number = 1;
   let hotels: Array<Hotel> = [];
   let restaurants: Array<Restaurant> = [];
+  console.log("Plan: ", plan.destinations);
 
   if (plan.hotels.length == 0) {
     hotels = plan.all_hotels;
@@ -182,7 +190,7 @@ export async function routeAlgo(plan: Plan) {
       }
     }
   } else {
-    firstHotel = await hotelInit(plan.hotels);
+    firstHotel = await hotelInit(hotels);
   }
 
   //add the hotel as  a day item
@@ -194,7 +202,6 @@ export async function routeAlgo(plan: Plan) {
   plan.destinations = plan.destinations.filter((destination) => {
     return destination.city_id !== firstHotel.city_id;
   });
-
 
   while (dayCount <= plan.duration) {
     let flag: boolean = false;
@@ -266,6 +273,8 @@ export async function routeAlgo(plan: Plan) {
       lastPosLng = restaurant.lng;
       day.items.push(dayitem);
     }
+
+    console.log("city_dest: ", city_destinations);
     //pop the dest from city_destinations
     city_destinations = city_destinations.filter((destination) => {
       return destination.id !== dest.id;
@@ -283,6 +292,7 @@ export async function routeAlgo(plan: Plan) {
     day.items.push(dayitem);
     lastPosLat = dest.lat;
     lastPosLng = dest.lng;
+    console.log("dayitem: ", dayitem);
     while (true) {
       if (city_destinations.length == 0) {
         flag = true;
@@ -309,6 +319,8 @@ export async function routeAlgo(plan: Plan) {
         day.items.push(newdayitem);
         lastPosLat = dest.lat;
         lastPosLng = dest.lng;
+        console.log("city_dest: ", city_destinations);
+        console.log("newdayitem: ", newdayitem);
         city_destinations = city_destinations.filter((destination) => {
           return destination.id !== dest.id;
         });
@@ -316,31 +328,37 @@ export async function routeAlgo(plan: Plan) {
       }
     }
     if (flag) {
-        if(plan.destinations.length == 0) {
-            break;
-        }
-        let temp: Date = new Date(current.getTime());
-        temp.setDate(temp.getDate() + 1);
-        firstHotel = await getNextHotel(lastPosLat, lastPosLng, plan, temp);
-        city_destinations = await destinationCity(firstHotel, plan.destinations);
-        plan.destinations = plan.destinations.filter((destination) => {
-            return destination.city_id !== firstHotel.city_id;
-            }
-        );
-        let clac = await distanceClac(lastPosLat, lastPosLng, firstHotel.lat, firstHotel.lng);
-        dayitem = {
-            name: firstHotel.name,
-            start_time: convertNumberToTime(time),
-            end_time: convertNumberToTime(time + clac.duration / 3600),
-            lat: firstHotel.lat,
-            lng: firstHotel.lng,
-            description: "Finish touring the city and check in to " + firstHotel.name,
-        };
-        time = time + clac.duration / 3600;
-        day.items.push(dayitem);
-        lastPosLat = firstHotel.lat;
-        lastPosLng = firstHotel.lng;
-        flag = false;
+      if (plan.destinations.length == 0) {
+        days.push(day);
+        break;
+      }
+      let temp: Date = new Date(current.getTime());
+      temp.setDate(temp.getDate() + 1);
+      firstHotel = await getNextHotel(lastPosLat, lastPosLng, plan, temp);
+      city_destinations = await destinationCity(firstHotel, plan.destinations);
+      plan.destinations = plan.destinations.filter((destination) => {
+        return destination.city_id !== firstHotel.city_id;
+      });
+      let clac = await distanceClac(
+        lastPosLat,
+        lastPosLng,
+        firstHotel.lat,
+        firstHotel.lng
+      );
+      dayitem = {
+        name: firstHotel.name,
+        start_time: convertNumberToTime(time),
+        end_time: convertNumberToTime(time + clac.duration / 3600),
+        lat: firstHotel.lat,
+        lng: firstHotel.lng,
+        description:
+          "Finish touring the city and check in to " + firstHotel.name,
+      };
+      time = time + clac.duration / 3600;
+      day.items.push(dayitem);
+      lastPosLat = firstHotel.lat;
+      lastPosLng = firstHotel.lng;
+      flag = false;
     }
     let restaurant: Restaurant = await getRestaurant(
       restaurants,
@@ -390,6 +408,8 @@ export async function routeAlgo(plan: Plan) {
         day.items.push(newdayitem);
         lastPosLat = dest.lat;
         lastPosLng = dest.lng;
+        console.log("city_dest: ", city_destinations);
+        console.log("newdayitem: ", newdayitem);
         city_destinations = city_destinations.filter((destination) => {
           return destination.id !== dest.id;
         });
@@ -398,61 +418,69 @@ export async function routeAlgo(plan: Plan) {
       }
     }
     if (flag) {
-        if(plan.destinations.length == 0) {
-            break;
-        }
-        let temp: Date = new Date(current.getTime());
-        temp.setDate(temp.getDate() + 1);
-        firstHotel = await getNextHotel(lastPosLat, lastPosLng, plan, temp);
-        city_destinations = await destinationCity(firstHotel, plan.destinations);
-        plan.destinations = plan.destinations.filter((destination) => {
-            return destination.city_id !== firstHotel.city_id;
-            }
-        );
-        let clac = await distanceClac(lastPosLat, lastPosLng, firstHotel.lat, firstHotel.lng);
-        dayitem = {
-            name: firstHotel.name,
-            start_time: convertNumberToTime(time),
-            end_time: convertNumberToTime(time + clac.duration / 3600),
-            lat: firstHotel.lat,
-            lng: firstHotel.lng,
-            description: "Finish touring the city and check in to " + firstHotel.name,
-        };
-        time = time + clac.duration / 3600;
-        day.items.push(dayitem);
-        lastPosLat = firstHotel.lat;
-        lastPosLng = firstHotel.lng;
-        flag=false;
+      if (plan.destinations.length == 0) {
+        days.push(day);
+        break;
+      }
+      let temp: Date = new Date(current.getTime());
+      temp.setDate(temp.getDate() + 1);
+      firstHotel = await getNextHotel(lastPosLat, lastPosLng, plan, temp);
+      city_destinations = await destinationCity(firstHotel, plan.destinations);
+      plan.destinations = plan.destinations.filter((destination) => {
+        return destination.city_id !== firstHotel.city_id;
+      });
+      let clac = await distanceClac(
+        lastPosLat,
+        lastPosLng,
+        firstHotel.lat,
+        firstHotel.lng
+      );
+      dayitem = {
+        name: firstHotel.name,
+        start_time: convertNumberToTime(time),
+        end_time: convertNumberToTime(time + clac.duration / 3600),
+        lat: firstHotel.lat,
+        lng: firstHotel.lng,
+        description:
+          "Finish touring the city and check in to " + firstHotel.name,
+      };
+      time = time + clac.duration / 3600;
+      day.items.push(dayitem);
+      lastPosLat = firstHotel.lat;
+      lastPosLng = firstHotel.lng;
+      flag = false;
     }
     restaurant = await getRestaurant(restaurants, lastPosLat, lastPosLng);
     ({ distance, duration } = await distanceClac(
-        lastPosLat,
-        lastPosLng,
-        restaurant.lat,
-        restaurant.lng
+      lastPosLat,
+      lastPosLng,
+      restaurant.lat,
+      restaurant.lng
     ));
     dayitem = {
-        name: restaurant.name,
-        start_time: convertNumberToTime(time + duration / 3600),
-        end_time: convertNumberToTime(time + duration / 3600 + 1),
-        lat: restaurant.lat,
-        lng: restaurant.lng,
-        description: "Take dinner in " + restaurant.name,
+      name: restaurant.name,
+      start_time: convertNumberToTime(time + duration / 3600),
+      end_time: convertNumberToTime(time + duration / 3600 + 1),
+      lat: restaurant.lat,
+      lng: restaurant.lng,
+      description: "Take dinner in " + restaurant.name,
     };
     time = time + duration / 3600 + 1;
     day.items.push(dayitem);
     lastPosLat = restaurant.lat;
     lastPosLng = restaurant.lng;
     dayitem = {
-        name: firstHotel.name,
-        start_time: convertNumberToTime(time),
-        end_time: convertNumberToTime(time + duration / 3600),
-        lat: firstHotel.lat,
-        lng: firstHotel.lng,
-        description: "Return to " + firstHotel.name + " and take rest",
+      name: firstHotel.name,
+      start_time: convertNumberToTime(time),
+      end_time: convertNumberToTime(time + duration / 3600),
+      lat: firstHotel.lat,
+      lng: firstHotel.lng,
+      description: "Return to " + firstHotel.name + " and take rest",
     };
     current.setDate(current.getDate() + 1);
     days.push(day);
+    dayCount++;
   }
-    return days;
+  console.log("Returning ", days);
+  return days;
 }
