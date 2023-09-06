@@ -12,7 +12,9 @@ export interface Plan {
     events: Event[];
     activities: Activity[];
     hotels: Hotel[],
+    all_hotels: Hotel[],
     restaurants: Restaurant[],
+    all_restaurants: Restaurant[],
     food_budget: number; // 1 for low, 2 for medium, 3 for high
     room_budget: number; // 1 for budget, 2 for premium, 3 for deluxe
     star_choice: number; // like 5-star

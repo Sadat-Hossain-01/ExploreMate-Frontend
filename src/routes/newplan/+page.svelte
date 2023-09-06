@@ -15,7 +15,6 @@
 
   let unique: any = {};
   let city_input: string = "";
-  let city_selections: string[] = [];
   let filtered_suggestions: string[] = [];
   let city_suggestions: string[] = [];
   let city_suggestion_open: boolean = false;
@@ -32,10 +31,14 @@
   $plan_store.choice_progress = 0;
 
   $: {
+    console.log("Plan Store Cities :", $plan_store.cities);
+  }
+
+  $: {
     filtered_suggestions = city_suggestions.filter(
       (city) =>
         city.toLowerCase().includes(city_input.toLowerCase()) &&
-        !city_selections.includes(city.split(",")[0].trim())
+        !$plan_store.cities.includes(city.split(",")[0].trim())
     );
     filtered_suggestions = filtered_suggestions.slice(0, 5);
     if (city_input.length > 0) city_suggestion_open = true;
@@ -47,7 +50,13 @@
       date_error_message = "Please select a start date.";
     else if (!checkDateValidity(start_date))
       date_error_message = "Please select a valid start date in future.";
-    else date_error_message = "";
+    else {
+      date_error_message = "";
+      if ($plan_store.cities.length > 0) {
+        unique = {};
+        show_error = false;
+      }
+    }
   }
 
   const checkDateValidity = (date: string) => {
@@ -91,7 +100,7 @@
   <Label class="mb-2 space-y-2 text-base font-semibold text-primary-ink">
     <span>Where do you want to go to?</span><br />
     <div class="flex flex-row flex-wrap space-x-1">
-      {#each city_selections as selected_city}
+      {#each $plan_store.cities as selected_city}
         <Badge dismissable large color="green"
           >{selected_city}
           <button
@@ -101,8 +110,10 @@
             data-dismiss-target="#badge-dismiss-default"
             aria-label="Remove"
             on:click={() => {
-              city_selections.splice(city_selections.indexOf(selected_city), 1);
-              city_selections = city_selections;
+              $plan_store.cities = $plan_store.cities.filter(
+                (city) => city != selected_city
+              );
+              $plan_store.cities = $plan_store.cities;
             }}
           >
             <svg
@@ -142,9 +153,9 @@
               <button
                 class="block w-full px-4 py-2 text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 on:click|stopPropagation={() => {
-                  city_selections.push(city.split(",")[0].trim());
+                  $plan_store.cities.push(city.split(",")[0].trim());
                   city_input = "";
-                  city_selections = city_selections;
+                  $plan_store.cities = $plan_store.cities;
                   filtered_suggestions = [];
                 }}
               >
@@ -227,7 +238,7 @@
     type="button"
     class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mx-auto dark:focus:ring-yellow-900"
     on:click|stopPropagation={() => {
-      if (city_selections.length == 0) {
+      if ($plan_store.cities.length == 0) {
         unique = {};
         show_error = true;
       } else if (date_error_message.length > 0) {
@@ -236,7 +247,7 @@
       } else {
         show_error = false;
         plan_store.update((current_data) => {
-          current_data.cities = city_selections;
+          current_data.cities = $plan_store.cities;
           current_data.buddy_count = traveler_count;
           current_data.start_date = start_date;
           current_data.duration = day_count;
@@ -250,7 +261,7 @@
     {#key unique}
       <Alert color="red" dismissable>
         <Icon name="info-circle-solid" slot="icon" class="w-4 h-4" />
-        {#if city_selections.length == 0}
+        {#if $plan_store.cities.length == 0}
           You should select a city to travel.<br />
         {/if}
         {#if date_error_message.length > 0}

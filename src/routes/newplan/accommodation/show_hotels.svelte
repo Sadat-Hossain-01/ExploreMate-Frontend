@@ -20,6 +20,8 @@
   let showable_hotels: Array<Hotel> = [];
   let show_selected_hotels: boolean = false;
 
+  $plan_store.all_hotels = hotel_suggestions;
+
   $: $plan_store.room_budget = room_quality_choice;
   $: $plan_store.star_choice = star_wanted;
 

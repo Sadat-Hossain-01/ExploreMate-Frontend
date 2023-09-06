@@ -14,6 +14,7 @@
   let restaurant_input: string = "";
   let value: number = 2;
   $: $plan_store.food_budget = value;
+  $plan_store.all_restaurants = suggested_restaurants;
 
   let restaurant_suggestions: Array<Restaurant> = suggested_restaurants;
   let restaurant_selections: Array<Restaurant> = [];
@@ -50,7 +51,7 @@
 
     $plan_store.restaurants = restaurant_selections;
 
-    console.log($plan_store.restaurants);
+    // console.log("Plan Store Restaurants :", $plan_store.restaurants);
 
     $plan_store.restaurant_estimated_budget = 0;
 
@@ -58,7 +59,6 @@
     let lunch_avg: number = 0;
     let dinner_avg: number = 0;
     $plan_store.restaurants.forEach((restaurant: any) => {
-      console.log(restaurant);
       if (restaurant.breakfast != null) breakfast_avg += restaurant.breakfast;
       if (restaurant.lunch != null) lunch_avg += restaurant.lunch;
       if (restaurant.dinner != null) dinner_avg += restaurant.dinner;
@@ -67,13 +67,6 @@
       breakfast_avg /= $plan_store.restaurants.length;
       lunch_avg /= $plan_store.restaurants.length;
       dinner_avg /= $plan_store.restaurants.length;
-      console.log(
-        breakfast_avg,
-        lunch_avg,
-        dinner_avg,
-        $plan_store.duration,
-        $plan_store.buddy_count
-      );
       $plan_store.restaurant_estimated_budget =
         (breakfast_avg + lunch_avg + dinner_avg) *
         $plan_store.duration *

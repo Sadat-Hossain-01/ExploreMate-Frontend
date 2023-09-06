@@ -2,7 +2,7 @@ import plan_store from "$lib/stores/planstore";
 import server_store from "$lib/stores/serverstore";
 import { redirect } from "@sveltejs/kit";
 
-let selected_destinations: string[] = ["Lalakhal"];
+let selected_destinations: string[] = [];
 let server_url: string = "";
 
 plan_store.subscribe((plan) => {
@@ -11,7 +11,7 @@ plan_store.subscribe((plan) => {
     });
     if (plan.cities.length == 0)
         throw redirect(307, "/newplan");
-    else if (plan.destinations.length < 3)
+    else if (plan.destinations.length < 1)
         throw redirect(307, "/newplan/destinations");
 });
 

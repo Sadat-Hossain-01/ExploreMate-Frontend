@@ -93,7 +93,7 @@
     type="button"
     class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mx-auto dark:focus:ring-yellow-900 mb-5"
     on:click|stopPropagation={() => {
-      if ($plan_store.destinations.length < 3) {
+      if ($plan_store.destinations.length < 1) {
         unique = {};
         show_error = true;
         return;
@@ -105,7 +105,7 @@
     {#key unique}
       <Alert color="red" dismissable class="w-1/2 mx-auto">
         <Icon name="info-circle-solid" slot="icon" class="w-4 h-4" />
-        You should select at least three destinations to travel.<br />
+        You should select at least one destination to travel.<br />
       </Alert>
     {/key}
   {/if}

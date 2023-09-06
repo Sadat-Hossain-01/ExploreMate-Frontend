@@ -9,6 +9,14 @@
   export let suggested_events: Array<Event>;
 
   let event_suggestions: Array<Event> = suggested_events;
+
+  // check if the events are already over
+  let today: Date = new Date();
+  event_suggestions = event_suggestions.filter(
+    (event: any) =>
+      new Date(event.start_time) >= today && new Date(event.end_time) >= today
+  );
+
   let event_selections: Array<Event> = [];
   let filtered_event_suggestions: Array<Event> = []; // filtered based on input
   let filtered_event_selections: Array<Event> = []; // filtered based on input
