@@ -27,9 +27,9 @@ export async function load() {
             },
             body: JSON.stringify({ destinations: selected_destinations }),
         });
-
         if (response_restaurant.ok) {
             const data_restaurant = await response_restaurant.json();
+            // console.log(data_restaurant);
             return {
                 restaurants: data_restaurant,
             };

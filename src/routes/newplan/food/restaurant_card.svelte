@@ -34,7 +34,7 @@
         <div>
           <div>
             <div class="flex items-center justify-between">
-              <h3 class="text-xl font-bold line-clamp-1">
+              <h3 class="text-xl font-extrabold line-clamp-1">
                 {restaurant.name}
               </h3>
               <div class="relative -right-3">

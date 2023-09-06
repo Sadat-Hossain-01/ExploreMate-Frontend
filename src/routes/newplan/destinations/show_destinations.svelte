@@ -3,9 +3,12 @@
   import plan_store from "$lib/stores/planstore";
   import { goto } from "$app/navigation";
   import DestinationCard from "./destination_card.svelte";
-  import { Search } from "flowbite-svelte";
+  import { Alert, Search } from "flowbite-svelte";
+  import { Icon } from "flowbite-svelte-icons";
 
   let search_input: string = "";
+  let show_error: boolean = false;
+  let unique: any = {};
 
   export let destination_suggestions: Array<Destination>;
   let destination_selections: Array<Destination> = [];
@@ -18,12 +21,7 @@
     destination_selections = destination_suggestions.filter(
       (destination: any) => destination.selected
     );
-    $plan_store.destination_budget = 0;
-    destination_selections.forEach((destination: any) => {
-      $plan_store.destination_budget += destination.estimated_cost;
-    });
     $plan_store.destination_budget *= $plan_store.traveler_count;
-    console.log("destination_budget", $plan_store.destination_budget);
 
     filtered_suggestions = destination_suggestions.filter((destination: any) =>
       destination.name.toLowerCase().includes(search_input.toLowerCase())
@@ -40,6 +38,10 @@
     else showable_destinations = destination_suggestions;
 
     $plan_store.destinations = destination_selections;
+    $plan_store.destination_budget = 0;
+    $plan_store.destinations.forEach((destination: any) => {
+      $plan_store.destination_budget += destination.estimated_cost;
+    });
   }
 </script>
 
@@ -91,7 +93,20 @@
     type="button"
     class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mx-auto dark:focus:ring-yellow-900 mb-5"
     on:click|stopPropagation={() => {
+      if ($plan_store.destinations.length < 3) {
+        unique = {};
+        show_error = true;
+        return;
+      }
       goto("/newplan/food");
     }}>Proceed</button
   >
+  {#if show_error}
+    {#key unique}
+      <Alert color="red" dismissable class="w-1/2 mx-auto">
+        <Icon name="info-circle-solid" slot="icon" class="w-4 h-4" />
+        You should select at least three destinations to travel.<br />
+      </Alert>
+    {/key}
+  {/if}
 </div>

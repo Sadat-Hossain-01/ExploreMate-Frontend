@@ -25,25 +25,6 @@
     restaurant_selections = restaurant_suggestions.filter(
       (restaurant: any) => restaurant.selected
     );
-    $plan_store.restaurant_budget = 0;
-
-    let breakfast_avg: number = 0;
-    let lunch_avg: number = 0;
-    let dinner_avg: number = 0;
-    restaurant_selections.forEach((restaurant: any) => {
-      if (restaurant.breakfast_price != null)
-        breakfast_avg += restaurant.breakfast_price;
-      if (restaurant.lunch_price != null) lunch_avg += restaurant.lunch_price;
-      if (restaurant.dinner_price != null)
-        dinner_avg += restaurant.dinner_price;
-    });
-    if (breakfast_avg !== 0) breakfast_avg /= restaurant_selections.length;
-    if (lunch_avg !== 0) lunch_avg /= restaurant_selections.length;
-    if (dinner_avg !== 0) dinner_avg /= restaurant_selections.length;
-    $plan_store.restaurant_budget =
-      (breakfast_avg + lunch_avg + dinner_avg) *
-      $plan_store.duration *
-      $plan_store.traveler_count;
 
     filtered_restaurant_suggestions = restaurant_suggestions.filter(
       (restaurant: any) =>
@@ -68,6 +49,36 @@
     });
 
     $plan_store.restaurants = restaurant_selections;
+
+    console.log($plan_store.restaurants);
+
+    $plan_store.restaurant_budget = 0;
+
+    let breakfast_avg: number = 0;
+    let lunch_avg: number = 0;
+    let dinner_avg: number = 0;
+    $plan_store.restaurants.forEach((restaurant: any) => {
+      console.log(restaurant);
+      if (restaurant.breakfast != null) breakfast_avg += restaurant.breakfast;
+      if (restaurant.lunch != null) lunch_avg += restaurant.lunch;
+      if (restaurant.dinner != null) dinner_avg += restaurant.dinner;
+    });
+    if ($plan_store.restaurants.length !== 0) {
+      breakfast_avg /= $plan_store.restaurants.length;
+      lunch_avg /= $plan_store.restaurants.length;
+      dinner_avg /= $plan_store.restaurants.length;
+      console.log(
+        breakfast_avg,
+        lunch_avg,
+        dinner_avg,
+        $plan_store.duration,
+        $plan_store.traveler_count
+      );
+      $plan_store.restaurant_budget =
+        (breakfast_avg + lunch_avg + dinner_avg) *
+        $plan_store.duration *
+        ($plan_store.traveler_count + 1);
+    }
   }
 </script>
 
@@ -81,8 +92,7 @@
         >Price Range:</Label
       >
       <div>
-        Depending on budget level, we will calculate the estimated cost and
-        suggest restaurants.
+        Depending on budget level, we will calculate the estimated cost.
       </div>
       <div class="flex flex-col justify-start gap-4 w-1/2 mt-3">
         <Range id="range-minmax" min="0" max="2" bind:value />
