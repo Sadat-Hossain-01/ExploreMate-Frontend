@@ -9,9 +9,10 @@ plan_store.subscribe((plan) => {
     plan.destinations.forEach((destination: any) => {
         selected_destinations.push(destination.name);
     });
-    // if (desired_cities.length == 0) {
-    //     throw redirect(307, "/newplan");
-    // }
+    if (plan.cities.length == 0)
+        throw redirect(307, "/newplan");
+    else if (plan.destinations.length < 3)
+        throw redirect(307, "/newplan/destinations");
 });
 
 server_store.subscribe((url: string) => {

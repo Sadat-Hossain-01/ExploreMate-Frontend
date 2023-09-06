@@ -45,7 +45,7 @@
       class="focus:outline-none text-primary-ink bg-accent-col hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-lg font-semibold px-5 py-2.5 mx-auto dark:focus:ring-yellow-900 mb-5"
       on:click|stopPropagation={() => {
         goto("/newplan/plan");
-      }}>Proceed</button
+      }}>Finalize</button
     >
   </section>
 </div>
