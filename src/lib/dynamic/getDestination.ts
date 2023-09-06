@@ -1,7 +1,7 @@
 import type { Destination } from "$lib/interfaces/destination";
 import { distanceClac } from "./distanceCalc";
 
-export async function getRestaurant(destinations : Array<Destination>, lat : number, lng : number): Promise<Destination> {
+export async function getDestination(destinations : Array<Destination>, lat : number, lng : number): Promise<Destination> {
     let minDur : number = -1;
     let minDis : number = -1;
     let minIdx : number = -1;
