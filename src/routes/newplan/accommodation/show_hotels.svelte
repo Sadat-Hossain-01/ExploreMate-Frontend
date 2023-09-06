@@ -175,7 +175,8 @@
     </div>
 
     <p class="mt-4 text-base primary-text-ink md:text-lg">
-      Select the hotels you would like to stay at during your trip.
+      Select the hotels you would like to stay at during your trip. (Possibly
+      None)
     </p>
   </div>
   <div class="flex flex-grow px-3 pb-10 md:px-12">

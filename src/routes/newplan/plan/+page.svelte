@@ -1,117 +1,41 @@
 <script lang="ts">
   import { Accordion, Span } from "flowbite-svelte";
-
-  import type { DayItem } from "$lib/interfaces/dayitem";
   import type { Day } from "$lib/interfaces/day";
   import type { MapItem } from "$lib/interfaces/mapitem";
-  import DayAccordian from "./day.svelte";
+  import DayAccordion from "./day.svelte";
   import Map from "../map.svelte";
   import plan_store from "$lib/stores/planstore";
+  import type { DayItem } from "$lib/interfaces/dayitem";
+  import { routeAlgo } from "$lib/dynamic/routeAlgo";
+  import type { Plan } from "$lib/interfaces/plan";
+
+  export let data: any;
 
   let current_mapitems: MapItem[] = [];
   $plan_store.choice_progress = 5;
 
-  let dummy_daywise_plan: Day[] = [
-    {
-      date: "2021-10-10",
-      items: [
-        <DayItem>{
-          name: "Eiffel Tower",
-          lat: 48.8584,
-          lng: 2.2945,
-          start_time: "10:00",
-          end_time: "11:00",
-          description: "This is a description",
-        },
-        <DayItem>{
-          name: "Louvre Museum",
-          lat: 48.8606,
-          lng: 2.3376,
-          start_time: "11:00",
-          end_time: "12:00",
-          description: "This is a description",
-        },
-        <DayItem>{
-          name: "Arc de Triomphe",
-          lat: 48.8738,
-          lng: 2.295,
-          start_time: "12:00",
-          end_time: "13:00",
-          description: "This is a description",
-        },
-      ],
-    },
-    {
-      date: "2021-10-11",
-      items: [
-        <DayItem>{
-          name: "Eiffel Tower",
-          lat: 48.8584,
-          lng: 2.2945,
-          start_time: "10:00",
-          end_time: "11:00",
-          description: "This is a description",
-        },
-        <DayItem>{
-          name: "Louvre Museum",
-          lat: 48.8606,
-          lng: 2.3376,
-          start_time: "11:00",
-          end_time: "12:00",
-          description: "This is a description",
-        },
-        <DayItem>{
-          name: "Arc de Triomphe",
-          lat: 48.8738,
-          lng: 2.295,
-          start_time: "12:00",
-          end_time: "13:00",
-          description: "This is a description",
-        },
-      ],
-    },
-    {
-      date: "2021-10-12",
-      items: [
-        <DayItem>{
-          name: "Eiffel Tower",
-          lat: 48.8584,
-          lng: 2.2945,
-          start_time: "10:00",
-          end_time: "11:00",
-          description: "This is a description",
-        },
-        <DayItem>{
-          name: "Louvre Museum",
-          lat: 48.8606,
-          lng: 2.3376,
-          start_time: "11:00",
-          end_time: "12:00",
-          description: "This is a description",
-        },
-        <DayItem>{
-          name: "Arc de Triomphe",
-          lat: 48.8738,
-          lng: 2.295,
-          start_time: "12:00",
-          end_time: "13:00",
-          description: "This is a description",
-        },
-      ],
-    },
-  ];
+  // console.log(data);
+  console.log(data.plan.length);
+  console.log(data.plan);
+  console.log(data.plan[0]);
+  let dd: DayItem = data.plan[0].items[0];
+  console.log(dd);
 
-  $: {
+  // construct array of days from above data
+  let all_days: Array<Day> = [];
+  for (let i = 0; i < data.plan.length; i++) {
+    let current_day: Day = data.plan[i];
+    all_days.push(current_day);
   }
 
-  let open_status = Array(dummy_daywise_plan.length).fill(false);
+  let open_status = Array(all_days.length).fill(false);
   const open_all = () => open_status.forEach((_, i) => (open_status[i] = true));
   const close_all = () =>
     open_status.forEach((_, i) => (open_status[i] = false));
 
   $: {
     current_mapitems = [];
-    dummy_daywise_plan.forEach((day, i) => {
+    all_days.forEach((day, i) => {
       if (open_status[i]) {
         day.items.forEach((item) => {
           current_mapitems.push({
@@ -153,8 +77,8 @@
       </button>
     </div>
     <Accordion multiple>
-      {#each dummy_daywise_plan as day, i}
-        <DayAccordian {day} bind:is_open={open_status[i]} day_number={i} />
+      {#each all_days as day, i}
+        <DayAccordion {day} bind:is_open={open_status[i]} day_number={i} />
       {/each}
     </Accordion>
   </div>

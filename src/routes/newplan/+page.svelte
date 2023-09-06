@@ -31,10 +31,6 @@
   $plan_store.choice_progress = 0;
 
   $: {
-    console.log("Plan Store Cities :", $plan_store.cities);
-  }
-
-  $: {
     filtered_suggestions = city_suggestions.filter(
       (city) =>
         city.toLowerCase().includes(city_input.toLowerCase()) &&

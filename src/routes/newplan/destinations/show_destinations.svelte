@@ -17,11 +17,12 @@
   let showable_destinations: Array<Destination> = [];
   let show_selected_ones: boolean = false;
 
+  $: console.log($plan_store.destinations);
+
   $: {
     destination_selections = destination_suggestions.filter(
       (destination: any) => destination.selected
     );
-    $plan_store.destination_estimated_budget *= $plan_store.buddy_count;
 
     filtered_suggestions = destination_suggestions.filter((destination: any) =>
       destination.name.toLowerCase().includes(search_input.toLowerCase())
@@ -42,6 +43,7 @@
     $plan_store.destinations.forEach((destination: any) => {
       $plan_store.destination_estimated_budget += destination.estimated_cost;
     });
+    $plan_store.destination_estimated_budget *= 1 + $plan_store.buddy_count;
   }
 </script>
 
