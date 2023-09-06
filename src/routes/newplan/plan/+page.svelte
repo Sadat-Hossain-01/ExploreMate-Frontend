@@ -47,6 +47,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Final Tour Plan</title>
+</svelte:head>
+
 <div class="flex">
   <div class="flex-col w-[55%] space-y-8 px-12">
     <div class="mt-8 text-4xl font-bold tracking-wider">
