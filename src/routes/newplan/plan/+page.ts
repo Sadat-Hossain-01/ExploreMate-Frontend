@@ -9,8 +9,9 @@ let plan: Plan;
 
 plan_store.subscribe((current_plan) => {
     plan = current_plan;
-    if (plan.cities.length == 0)
-        throw redirect(307, "/newplan");
+    // if (plan.cities.length == 0) {
+    //     throw redirect(307, "/newplan");
+    // }
 });
 
 export async function load() {
