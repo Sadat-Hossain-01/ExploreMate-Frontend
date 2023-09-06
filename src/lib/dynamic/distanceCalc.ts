@@ -11,31 +11,31 @@ export async function distanceClac(
   dlat: number,
   dlng: number
 ) {
-  // try {
-  //   const response = await fetch(
-  //     api_url +
-  //       slng +
-  //       "," +
-  //       slat +
-  //       ";" +
-  //       dlng +
-  //       "," +
-  //       dlat +
-  //       "?" +
-  //       api_ano +
-  //       "&" +
-  //       api_key,
-  //     {
-  //       method: "GET",
-  //     }
-  //   );
+  try {
+    const response = await fetch(
+      api_url +
+        slng +
+        "," +
+        slat +
+        ";" +
+        dlng +
+        "," +
+        dlat +
+        "?" +
+        api_ano +
+        "&" +
+        api_key,
+      {
+        method: "GET",
+      }
+    );
 
-  //   const data = await response.json();
+    const data = await response.json();
     return {
-      distance: 2500,//data["distances"][0][1],
-      duration: 3600//data["durations"][0][1],
+      distance: data["distances"][0][1],
+      duration: data["durations"][0][1],
     };
-  // } catch (err) {
-  //   throw err;
-  // }
+  } catch (err) {
+    throw err;
+  }
 }
