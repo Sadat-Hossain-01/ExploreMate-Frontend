@@ -12,6 +12,7 @@ import type { Hotel } from "$lib/interfaces/hotel";
 import type { Day } from "$lib/interfaces/day";
 import type { DayItem } from "$lib/interfaces/dayitem";
 import type { Plan } from "$lib/interfaces/plan";
+import { get } from "svelte/store";
 
 const transportCost: number = 0.1;
 // write a function to convert string to real number
@@ -38,6 +39,21 @@ function convertNumberToTime(time: number): string {
     minuteString = "0" + minuteString;
   }
   return hourString + ":" + minuteString;
+}
+
+function getStringFromSeconds(seconds: number): string {
+  seconds = Math.round(seconds);
+  let hour: number = Math.floor(seconds / 3600);
+  let minute: number = seconds % 60;
+  if (hour == 0) {
+    return minute + " minutes";
+  }
+  else if (minute == 0) {
+    return hour + " hours";
+  }
+  else {
+    return hour + " hours " + minute + " minutes";
+  }
 }
 
 async function getDayitemFromDest(
@@ -90,7 +106,7 @@ async function getDayitemFromDest(
     end_time: convertNumberToTime(time + dest.estimated_time + timeNeeded),
     lat: dest.lat,
     lng: dest.lng,
-    description: description + ". Travel time: " + duration/60 + " minutes",
+    description: description + ". Travel time: " + getStringFromSeconds(duration),
     estimated_cost: dest.estimated_cost+cost+distance*transportCost/1000,
   };
   return dayitem;
@@ -309,7 +325,7 @@ export async function routeAlgo(plan: Plan) {
         end_time: convertNumberToTime(time + duration / 3600 + 0.5),
         lat: restaurant.lat,
         lng: restaurant.lng,
-        description: "Take breakfast in " + restaurant.name + ". Travel time: " + duration/60 + " minutes",
+        description: "Take breakfast in " + restaurant.name + ". Travel time: " + getStringFromSeconds(duration),
         estimated_cost: restaurant.breakfast*plan.buddy_count+distance*transportCost/1000,
       };
       time = time + duration / 3600 + 0.5;
@@ -410,7 +426,7 @@ export async function routeAlgo(plan: Plan) {
         end_time: convertNumberToTime(time + clac.duration / 3600),
         lat: firstHotel.lat,
         lng: firstHotel.lng,
-        description:"Finish touring the city and check in to " + firstHotel.name + ". Travel time: " + clac.duration/60 + " minutes",
+        description:"Finish touring the city and check in to " + firstHotel.name + ". Travel time: " + getStringFromSeconds(clac.duration),
         estimated_cost: clac.distance*transportCost/1000,
       };
       time = time + clac.duration / 3600;
@@ -442,7 +458,7 @@ export async function routeAlgo(plan: Plan) {
       end_time: convertNumberToTime(time + duration / 3600 + 1),
       lat: restaurant.lat,
       lng: restaurant.lng,
-      description: "Take lunch in " + restaurant.name + ". Travel time: " + duration/60 + " minutes",
+      description: "Take lunch in " + restaurant.name + ". Travel time: " + getStringFromSeconds(duration),
       estimated_cost: restaurant.lunch*plan.buddy_count+distance*transportCost/1000,
     };
     time = time + duration / 3600 + 1;
@@ -512,7 +528,7 @@ export async function routeAlgo(plan: Plan) {
         lat: firstHotel.lat,
         lng: firstHotel.lng,
         description:
-          "Finish touring the city and check in to " + firstHotel.name + ". Travel time: " + clac.duration/60 + " minutes",
+          "Finish touring the city and check in to " + firstHotel.name + ". Travel time: " + getStringFromSeconds(clac.duration),
         estimated_cost: clac.distance*transportCost/1000,
       };
       time = time + clac.duration / 3600;
@@ -544,20 +560,26 @@ export async function routeAlgo(plan: Plan) {
       end_time: convertNumberToTime(time + duration / 3600 + 1),
       lat: restaurant.lat,
       lng: restaurant.lng,
-      description: "Take dinner in " + restaurant.name + ". Travel time: " + duration/60 + " minutes",
+      description: "Take dinner in " + restaurant.name + ". Travel time: " + getStringFromSeconds(duration),
       estimated_cost: restaurant.dinner*plan.buddy_count+distance*transportCost/1000,
     };
     time = time + duration / 3600 + 1;
     day.items.push(dayitem);
     lastPosLat = restaurant.lat;
     lastPosLng = restaurant.lng;
+    ({ distance, duration } = await distanceClac(
+      lastPosLat,
+      lastPosLng,
+      firstHotel.lat,
+      firstHotel.lng
+    ));
     dayitem = {
       name: firstHotel.name,
       start_time: convertNumberToTime(time),
       end_time: convertNumberToTime(time + duration / 3600),
       lat: firstHotel.lat,
       lng: firstHotel.lng,
-      description: "Return to " + firstHotel.name + " and take rest. Travel time: " + duration/60 + " minutes",
+      description: "Return to " + firstHotel.name + " and take rest. Travel time: " + getStringFromSeconds(duration),
       estimated_cost: distance*transportCost/1000,
     };
     current.setDate(current.getDate() + 1);
