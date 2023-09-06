@@ -7,9 +7,13 @@
   import DayAccordian from "./day.svelte";
   import Map from "../map.svelte";
   import plan_store from "$lib/stores/planstore";
+  import { routeAlgo } from "$lib/dynamic/routeAlgo";
+  import { onMount } from "svelte";
 
   let current_mapitems: MapItem[] = [];
   $plan_store.choice_progress = 5;
+
+  console.log(routeAlgo($plan_store));
 
   let dummy_daywise_plan: Day[] = [
     {

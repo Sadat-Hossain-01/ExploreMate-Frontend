@@ -31,6 +31,7 @@ export async function load() {
         });
         if (response_hotel.ok) {
             const data_hotel = await response_hotel.json();
+            console.log(data_hotel);
             return {
                 hotels: data_hotel,
             };
