@@ -8,4 +8,5 @@ export interface Activity {
     rating_count: number;
     min_cost: number;
     max_cost: number;
+    destination_id: number;
 };

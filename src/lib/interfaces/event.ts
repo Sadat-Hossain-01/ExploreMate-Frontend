@@ -10,4 +10,5 @@ export interface Event {
     rating: number;
     rating_count: number;
     selected: boolean;
+    destination_id: number;
 }
