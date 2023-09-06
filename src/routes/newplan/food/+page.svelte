@@ -4,7 +4,7 @@
   import plan_store from "$lib/stores/planstore";
 
   export let data: any;
-  $plan_store.choice_level = 2;
+  $plan_store.choice_progress = 2;
   let suggested_restaurants: Array<Restaurant> = data.restaurants;
 </script>
 

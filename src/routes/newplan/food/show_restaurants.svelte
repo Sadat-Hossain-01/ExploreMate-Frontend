@@ -9,11 +9,11 @@
 
   export let suggested_restaurants: Array<Restaurant>;
 
-  $plan_store.choice_level = 2;
+  $plan_store.choice_progress = 2;
 
   let restaurant_input: string = "";
   let value: number = 2;
-  $: $plan_store.food_choice = value;
+  $: $plan_store.food_budget = value;
 
   let restaurant_suggestions: Array<Restaurant> = suggested_restaurants;
   let restaurant_selections: Array<Restaurant> = [];
@@ -52,7 +52,7 @@
 
     console.log($plan_store.restaurants);
 
-    $plan_store.restaurant_budget = 0;
+    $plan_store.restaurant_estimated_budget = 0;
 
     let breakfast_avg: number = 0;
     let lunch_avg: number = 0;
@@ -72,12 +72,12 @@
         lunch_avg,
         dinner_avg,
         $plan_store.duration,
-        $plan_store.traveler_count
+        $plan_store.buddy_count
       );
-      $plan_store.restaurant_budget =
+      $plan_store.restaurant_estimated_budget =
         (breakfast_avg + lunch_avg + dinner_avg) *
         $plan_store.duration *
-        ($plan_store.traveler_count + 1);
+        ($plan_store.buddy_count + 1);
     }
   }
 </script>

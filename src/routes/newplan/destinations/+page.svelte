@@ -6,7 +6,7 @@
   import Map from "../map.svelte";
   export let data;
 
-  $plan_store.choice_level = 1;
+  $plan_store.choice_progress = 1;
 
   let destination_suggestions: Array<Destination> = data.destinations;
   let current_mapitems: Array<MapItem> = [];

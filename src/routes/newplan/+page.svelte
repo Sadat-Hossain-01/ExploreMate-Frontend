@@ -29,7 +29,7 @@
     city_suggestions.push(city.name + ", " + city.state + ", " + city.country);
   });
 
-  $plan_store.choice_level = 0;
+  $plan_store.choice_progress = 0;
 
   $: {
     filtered_suggestions = city_suggestions.filter(
@@ -237,7 +237,7 @@
         show_error = false;
         plan_store.update((current_data) => {
           current_data.cities = city_selections;
-          current_data.traveler_count = traveler_count;
+          current_data.buddy_count = traveler_count;
           current_data.start_date = start_date;
           current_data.duration = day_count;
           return current_data;

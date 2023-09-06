@@ -3,7 +3,7 @@
   import ShowHotels from "./show_hotels.svelte";
   import plan_store from "$lib/stores/planstore";
 
-  $plan_store.choice_level = 3;
+  $plan_store.choice_progress = 3;
 
   export let data: any;
   let suggested_hotels: Array<Hotel> = data.hotels;

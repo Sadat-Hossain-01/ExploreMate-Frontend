@@ -9,7 +9,7 @@
     class="w-full pb-2 sticky top-[60px] z-10 pt-5 pl-5 bg-primary-col flex-row"
   >
     <ol class="inline-flex items-center space-x-1 md:space-x-3 w-1/2">
-      {#each Array($plan_store.choice_level + 1) as _, i}
+      {#each Array($plan_store.choice_progress + 1) as _, i}
         <li aria-current="page">
           <div class="flex items-center">
             <svg
@@ -27,7 +27,7 @@
                 d="m1 9 4-4-4-4"
               />
             </svg>
-            {#if i === $plan_store.choice_level}
+            {#if i === $plan_store.choice_progress}
               <span
                 class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400"
                 >{hashmap[i]?.[0]}</span
@@ -37,7 +37,7 @@
                 href={hashmap[i]?.[1]}
                 class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
                 on:click|stopPropagation={() => {
-                  $plan_store.choice_level = i;
+                  $plan_store.choice_progress = i;
                   goto(hashmap[i]?.[1]);
                 }}>{hashmap[i]?.[0]}</a
               >
@@ -49,11 +49,11 @@
     <div class="flex justify-end mx-5 font-bold my-auto">
       <i class="fa-solid fa-money-bill my-auto mr-5" />
       ${Math.round(
-        ($plan_store.destination_budget +
-          $plan_store.hotel_budget +
-          $plan_store.restaurant_budget +
-          $plan_store.activity_budget +
-          $plan_store.event_budget +
+        ($plan_store.destination_estimated_budget +
+          $plan_store.hotel_estimated_budget +
+          $plan_store.restaurant_estimated_budget +
+          $plan_store.activity_estimated_budget +
+          $plan_store.event_estimated_budget +
           Number.EPSILON) *
           100
       ) / 100}

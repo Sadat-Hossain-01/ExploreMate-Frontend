@@ -11,7 +11,7 @@
   let star_wanted: number = 3;
   let room_quality_choice: number = 2; // 1 = budget, 2 = premium, 3 = deluxe
 
-  $plan_store.choice_level = 3;
+  $plan_store.choice_progress = 3;
 
   let hotel_suggestions: Array<Hotel> = suggested_hotels;
   let hotel_selections: Array<Hotel> = [];
@@ -19,6 +19,9 @@
   let filtered_hotel_selections: Array<Hotel> = []; // filtered based on input
   let showable_hotels: Array<Hotel> = [];
   let show_selected_hotels: boolean = false;
+
+  $: $plan_store.room_budget = room_quality_choice;
+  $: $plan_store.star_choice = star_wanted;
 
   $: {
     hotel_selections = hotel_suggestions.filter((hotel: any) => hotel.selected);
@@ -53,7 +56,7 @@
 
     $plan_store.hotels = hotel_selections;
 
-    $plan_store.hotel_budget = 0;
+    $plan_store.hotel_estimated_budget = 0;
 
     let budget_avg: number = 0;
     let premium_avg: number = 0;
@@ -76,8 +79,8 @@
     else if (room_quality_choice === 2) multiplier = premium_avg;
     else if (room_quality_choice === 3) multiplier = deluxe_avg;
 
-    $plan_store.hotel_budget =
-      multiplier * $plan_store.duration * (1 + $plan_store.traveler_count);
+    $plan_store.hotel_estimated_budget =
+      multiplier * $plan_store.duration * (1 + $plan_store.buddy_count);
   }
 </script>
 

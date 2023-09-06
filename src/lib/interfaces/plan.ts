@@ -13,14 +13,16 @@ export interface Plan {
     activities: Activity[];
     hotels: Hotel[],
     restaurants: Restaurant[],
-    food_choice: number; // 0 for low, 1 for medium, 2 for high
-    choice_level: number;
-    traveler_count: number,
-    destination_budget: number,
-    hotel_budget: number,
-    restaurant_budget: number,
-    activity_budget: number,
-    event_budget: number
+    food_budget: number; // 1 for low, 2 for medium, 3 for high
+    room_budget: number; // 1 for budget, 2 for premium, 3 for deluxe
+    star_choice: number; // like 5-star
+    choice_progress: number; // 0 : city, 1 : destination, 2 : food, 3 : accomodation, 4 : events & activities
+    buddy_count: number,
+    destination_estimated_budget: number,
+    hotel_estimated_budget: number,
+    restaurant_estimated_budget: number,
+    activity_estimated_budget: number,
+    event_estimated_budget: number
 }
 
 export const hashmap: Record<number, [string, string]> = {
@@ -28,6 +30,5 @@ export const hashmap: Record<number, [string, string]> = {
     1: ["Destinations", "/newplan/destinations"],
     2: ["Food", "/newplan/food"],
     3: ["Accomodation", "/newplan/accomodation"],
-    4: ["Events", "/newplan/events"],
-    5: ["Activities", "/newplan/activities"],
+    4: ["Events & Activities", "/newplan/event_activity"],
 };

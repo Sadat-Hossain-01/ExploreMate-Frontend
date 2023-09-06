@@ -22,7 +22,7 @@
     >
       <button
         class="min-h-[10rem] w-full cursor-pointer overflow-hidden rounded-t-xl bg-cover bg-center"
-        style="background-image: url('{event.image_url}')"
+        style="background-image: url('{event.img_url}')"
       >
         <div
           class="group flex h-full w-full flex-col items-center justify-center gap-1 text-white hover:bg-[#0000006e]"
@@ -87,7 +87,7 @@
                 d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
               />
             </svg>
-            {event.min_cost} - {event.max_cost} USD
+            {event.minCost} - {event.maxCost} USD
           </div>
         </div>
         <div class="flex justify-between text-base text-center font-bold">
@@ -103,8 +103,8 @@
                 d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"
               />
             </svg>
-            {event.start_time}<br />
-            {event.end_time}
+            {event.startTime}<br />
+            {event.endTime}
           </div>
         </div>
       </div>

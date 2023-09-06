@@ -21,7 +21,7 @@
     destination_selections = destination_suggestions.filter(
       (destination: any) => destination.selected
     );
-    $plan_store.destination_budget *= $plan_store.traveler_count;
+    $plan_store.destination_estimated_budget *= $plan_store.buddy_count;
 
     filtered_suggestions = destination_suggestions.filter((destination: any) =>
       destination.name.toLowerCase().includes(search_input.toLowerCase())
@@ -38,9 +38,9 @@
     else showable_destinations = destination_suggestions;
 
     $plan_store.destinations = destination_selections;
-    $plan_store.destination_budget = 0;
+    $plan_store.destination_estimated_budget = 0;
     $plan_store.destinations.forEach((destination: any) => {
-      $plan_store.destination_budget += destination.estimated_cost;
+      $plan_store.destination_estimated_budget += destination.estimated_cost;
     });
   }
 </script>

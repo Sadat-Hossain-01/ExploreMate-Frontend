@@ -21,7 +21,7 @@
     >
       <button
         class="min-h-[10rem] w-full cursor-pointer overflow-hidden rounded-t-xl bg-cover bg-center"
-        style="background-image: url('{activity.image_url}')"
+        style="background-image: url('{activity.img_url}')"
       >
         <div
           class="group flex h-full w-full flex-col items-center justify-center gap-1 text-white hover:bg-[#0000006e]"
@@ -86,7 +86,7 @@
                 d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
               />
             </svg>
-            {activity.min_cost} - {activity.max_cost} USD
+            {activity.minCost} - {activity.maxCost} USD
           </div>
         </div>
       </div>
