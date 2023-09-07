@@ -19,12 +19,22 @@
   // let dd: DayItem = data.plan[0].items[0];
   // console.log(dd);
 
+  let total_cost : number = 0;
+
   // construct array of days from above data
   let all_days: Array<Day> = [];
   for (let i = 0; i < data.plan.length; i++) {
     let current_day: Day = data.plan[i];
     all_days.push(current_day);
+    current_day.items.forEach((item: DayItem) => {
+      total_cost += item.estimated_cost;
+    });
   }
+
+  $plan_store.destination_estimated_budget = total_cost;
+  $plan_store.hotel_estimated_budget = $plan_store.restaurant_estimated_budget = $plan_store.event_estimated_budget = $plan_store.activity_estimated_budget = 0;
+
+  console.log("Total Cost", total_cost);
 
   let open_status = Array(all_days.length).fill(false);
   const open_all = () => open_status.forEach((_, i) => (open_status[i] = true));

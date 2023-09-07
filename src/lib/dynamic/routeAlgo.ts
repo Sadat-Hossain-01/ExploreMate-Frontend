@@ -1,6 +1,10 @@
 import { distanceClac } from "./distanceCalc";
 import { getActivity } from "./getActivity";
-import { getRestaurant ,getCityRestaurants, getPreferedRest} from "./getRestaurant";
+import {
+  getRestaurant,
+  getCityRestaurants,
+  getPreferedRest,
+} from "./getRestaurant";
 import { getEvent, mustEvent, isEligible } from "./getEvent";
 import { getDestination } from "./getDestination";
 import { hotelInit, hotelCity, destinationCity } from "./hotelInit";
@@ -51,11 +55,9 @@ function getStringFromSeconds(seconds: number): string {
   let minute: number = seconds % 60;
   if (hour == 0) {
     return minute + " minutes";
-  }
-  else if (minute == 0) {
+  } else if (minute == 0) {
     return hour + " hours";
-  }
-  else {
+  } else {
     return hour + " hours " + minute + " minutes";
   }
 }
@@ -84,7 +86,10 @@ async function getDayitemFromDest(
   if (eligibleActivities.length > 0) description += " and complete ";
   for (let i: number = 0; i < eligibleActivities.length; i++) {
     timeNeeded += eligibleActivities[i].time;
-    cost += plan.buddy_count*(eligibleActivities[i].minCost+eligibleActivities[i].maxCost)/2;
+    cost +=
+      (plan.buddy_count *
+        (eligibleActivities[i].minCost + eligibleActivities[i].maxCost)) /
+      2;
     description += eligibleActivities[i].name;
     if (i < eligibleActivities.length - 1) {
       description += ", ";
@@ -94,7 +99,10 @@ async function getDayitemFromDest(
   if (eligibleEvents.length > 0) description += " and attend ";
   for (let i: number = 0; i < eligibleEvents.length; i++) {
     timeNeeded += eligibleEvents[i].estimated_time;
-    cost+=plan.buddy_count*(eligibleEvents[i].minCost+eligibleEvents[i].maxCost)/2;
+    cost +=
+      (plan.buddy_count *
+        (eligibleEvents[i].minCost + eligibleEvents[i].maxCost)) /
+      2;
     description += eligibleEvents[i].name;
     if (i < eligibleEvents.length - 1) {
       description += ", ";
@@ -110,8 +118,15 @@ async function getDayitemFromDest(
     end_time: convertNumberToTime(time + dest.estimated_time + timeNeeded),
     lat: dest.lat,
     lng: dest.lng,
-    description: description + ". Travel time: " + getStringFromSeconds(duration),
-    estimated_cost: roundToTwo(dest.estimated_cost+cost+distance*transportCost/1000),
+    description:
+      description +
+      ". Travel time: " +
+      getStringFromSeconds(duration) +
+      ". Travel cost: $" +
+      roundToTwo((distance * transportCost) / 1000),
+    estimated_cost: roundToTwo(
+      dest.estimated_cost + cost + (distance * transportCost) / 1000
+    ),
   };
   return dayitem;
 }
@@ -123,7 +138,7 @@ async function getNextRestaurant(
   all: Array<Restaurant>,
   city_id: number
 ) {
-  if (pref.length > 0) {  
+  if (pref.length > 0) {
     let rest = await getPreferedRest(pref, lat, lng, city_id);
     console.log("pref: ", rest);
     if (rest != null) {
@@ -135,9 +150,9 @@ async function getNextRestaurant(
   }
   console.log("no pref");
   let rest = await getRestaurant(all, lat, lng);
+  console.log("all: ", rest);
   return rest;
 }
-
 
 async function getNextHotel(
   lat: number,
@@ -265,13 +280,11 @@ export async function routeAlgo(plan: Plan) {
       items: [],
     };
     let hotelCost: number = 0;
-    if(plan.room_budget == 1) {
+    if (plan.room_budget == 1) {
       hotelCost = firstHotel.low;
-    }
-    else if(plan.room_budget == 2) {
+    } else if (plan.room_budget == 2) {
       hotelCost = firstHotel.mid;
-    }
-    else {
+    } else {
       hotelCost = firstHotel.high;
     }
     let time: number = 8;
@@ -282,7 +295,7 @@ export async function routeAlgo(plan: Plan) {
       lat: firstHotel.lat,
       lng: firstHotel.lng,
       description: "Leave hotel for breakfast",
-      estimated_cost: roundToTwo(hotelCost*plan.buddy_count),
+      estimated_cost: roundToTwo(hotelCost * plan.buddy_count),
     };
     let dest = city_destinations[0];
     let lastPosLat: number = firstHotel.lat;
@@ -295,7 +308,7 @@ export async function routeAlgo(plan: Plan) {
         lat: firstHotel.lat,
         lng: firstHotel.lng,
         description: "Take complimentary breakfast in the hotel",
-        estimated_cost: roundToTwo(hotelCost*plan.buddy_count),
+        estimated_cost: roundToTwo(hotelCost * plan.buddy_count),
       };
       time = 8.5;
       day.items.push(dayitem);
@@ -329,8 +342,17 @@ export async function routeAlgo(plan: Plan) {
         end_time: convertNumberToTime(time + duration / 3600 + 0.5),
         lat: restaurant.lat,
         lng: restaurant.lng,
-        description: "Take breakfast in " + restaurant.name + ". Travel time: " + getStringFromSeconds(duration),
-        estimated_cost: roundToTwo(restaurant.breakfast*plan.buddy_count+distance*transportCost/1000),
+        description:
+          "Take breakfast in " +
+          restaurant.name +
+          ". Travel time: " +
+          getStringFromSeconds(duration) +
+          ". Travel cost: $" +
+          roundToTwo((distance * transportCost) / 1000),
+        estimated_cost: roundToTwo(
+          restaurant.breakfast * plan.buddy_count +
+            (distance * transportCost) / 1000
+        ),
       };
       time = time + duration / 3600 + 0.5;
       dest = await getDestination(
@@ -376,7 +398,7 @@ export async function routeAlgo(plan: Plan) {
         time
       );
       let rest = await getNextRestaurant(
-        dest.lat, 
+        dest.lat,
         dest.lng,
         prefRestaurants,
         city_restaurants,
@@ -430,8 +452,14 @@ export async function routeAlgo(plan: Plan) {
         end_time: convertNumberToTime(time + clac.duration / 3600),
         lat: firstHotel.lat,
         lng: firstHotel.lng,
-        description:"Finish touring the city and check in to " + firstHotel.name + ". Travel time: " + getStringFromSeconds(clac.duration),
-        estimated_cost: roundToTwo(clac.distance*transportCost/1000),
+        description:
+          "Finish touring the city and check in to " +
+          firstHotel.name +
+          ". Travel time: " +
+          getStringFromSeconds(clac.duration) +
+          ". Travel cost: $" +
+          roundToTwo((clac.distance * transportCost) / 1000),
+        estimated_cost: roundToTwo((clac.distance * transportCost) / 1000),
       };
       time = time + clac.duration / 3600;
       day.items.push(dayitem);
@@ -440,7 +468,7 @@ export async function routeAlgo(plan: Plan) {
       flag = false;
     }
     let restaurant: Restaurant = await getNextRestaurant(
-      lastPosLat, 
+      lastPosLat,
       lastPosLng,
       prefRestaurants,
       city_restaurants,
@@ -462,8 +490,16 @@ export async function routeAlgo(plan: Plan) {
       end_time: convertNumberToTime(time + duration / 3600 + 1),
       lat: restaurant.lat,
       lng: restaurant.lng,
-      description: "Take lunch in " + restaurant.name + ". Travel time: " + getStringFromSeconds(duration),
-      estimated_cost: roundToTwo(restaurant.lunch*plan.buddy_count+distance*transportCost/1000),
+      description:
+        "Take lunch in " +
+        restaurant.name +
+        ". Travel time: " +
+        getStringFromSeconds(duration) +
+        ". Travel cost: $" +
+        roundToTwo((distance * transportCost) / 1000),
+      estimated_cost: roundToTwo(
+        restaurant.lunch * plan.buddy_count + (distance * transportCost) / 1000
+      ),
     };
     time = time + duration / 3600 + 1;
     day.items.push(dayitem);
@@ -532,8 +568,13 @@ export async function routeAlgo(plan: Plan) {
         lat: firstHotel.lat,
         lng: firstHotel.lng,
         description:
-          "Finish touring the city and check in to " + firstHotel.name + ". Travel time: " + getStringFromSeconds(clac.duration),
-        estimated_cost: roundToTwo(clac.distance*transportCost/1000),
+          "Finish touring the city and check in to " +
+          firstHotel.name +
+          ". Travel time: " +
+          getStringFromSeconds(clac.duration) +
+          ". Travel cost: $" +
+          roundToTwo((clac.distance * transportCost) / 1000),
+        estimated_cost: roundToTwo((clac.distance * transportCost) / 1000),
       };
       time = time + clac.duration / 3600;
       day.items.push(dayitem);
@@ -542,7 +583,7 @@ export async function routeAlgo(plan: Plan) {
       flag = false;
     }
     restaurant = await getNextRestaurant(
-      lastPosLat, 
+      lastPosLat,
       lastPosLng,
       prefRestaurants,
       city_restaurants,
@@ -558,14 +599,26 @@ export async function routeAlgo(plan: Plan) {
       restaurant.lat,
       restaurant.lng
     ));
+    if (time < 19.5) {
+      time = 20.5;
+    }
+
     dayitem = {
       name: restaurant.name,
       start_time: convertNumberToTime(time + duration / 3600),
       end_time: convertNumberToTime(time + duration / 3600 + 1),
       lat: restaurant.lat,
       lng: restaurant.lng,
-      description: "Take dinner in " + restaurant.name + ". Travel time: " + getStringFromSeconds(duration),
-      estimated_cost: roundToTwo(restaurant.dinner*plan.buddy_count+distance*transportCost/1000),
+      description:
+        "Take dinner in " +
+        restaurant.name +
+        ". Travel time: " +
+        getStringFromSeconds(duration) +
+        ". Travel cost: $" +
+        roundToTwo((distance * transportCost) / 1000),
+      estimated_cost: roundToTwo(
+        restaurant.dinner * plan.buddy_count + (distance * transportCost) / 1000
+      ),
     };
     time = time + duration / 3600 + 1;
     day.items.push(dayitem);
@@ -583,8 +636,14 @@ export async function routeAlgo(plan: Plan) {
       end_time: convertNumberToTime(time + duration / 3600),
       lat: firstHotel.lat,
       lng: firstHotel.lng,
-      description: "Return to " + firstHotel.name + " and take rest. Travel time: " + getStringFromSeconds(duration),
-      estimated_cost: roundToTwo(distance*transportCost/1000),
+      description:
+        "Return to " +
+        firstHotel.name +
+        " and take rest. Travel time: " +
+        getStringFromSeconds(duration) +
+        ". Travel cost: $" +
+        roundToTwo((distance * transportCost) / 1000),
+      estimated_cost: roundToTwo((distance * transportCost) / 1000),
     };
     current.setDate(current.getDate() + 1);
     day.items.push(dayitem);
