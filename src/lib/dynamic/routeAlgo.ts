@@ -1,9 +1,9 @@
 import { distanceClac } from "./distanceCalc";
 import { getActivity } from "./getActivity";
 import {
-    getRestaurant,
-    getCityRestaurants,
-    getPreferedRest,
+  getRestaurant,
+  getCityRestaurants,
+  getPreferedRest,
 } from "./getRestaurant";
 import { getEvent, mustEvent, isEligible } from "./getEvent";
 import { getDestination } from "./getDestination";

@@ -8,13 +8,22 @@
 
   export let suggested_events: Array<Event>;
 
+  console.log(suggested_events);
   let event_suggestions: Array<Event> = suggested_events;
 
   // check if the events are already over
-  let today: Date = new Date();
+  let today: Date = new Date($plan_store.start_date);
+  let end_date: Date = new Date($plan_store.start_date);
+  end_date.setDate(end_date.getDate()+$plan_store.duration);
+  console.log(today, end_date);
   event_suggestions = event_suggestions.filter(
-    (event: any) =>
-      new Date(event.start_time) >= today && new Date(event.end_time) >= today
+    (event: any) =>{
+      console.log(event.startTime,event.endTime);
+      console.log(today, end_date,new Date(event.startTime),new Date(event.endTime));
+      console.log(new Date(event.startTime) <= end_date);
+      console.log( new Date(event.endTime) >= today);
+      return (new Date(event.startTime) <= end_date && new Date(event.endTime) >= today);
+    }
   );
 
   let event_selections: Array<Event> = [];
