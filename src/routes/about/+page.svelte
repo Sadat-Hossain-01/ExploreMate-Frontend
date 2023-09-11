@@ -8,7 +8,7 @@
     "Rating",
   ];
 
-  import { AccordionItem, Accordion, Button } from "flowbite-svelte";
+  import { AccordionItem, Accordion } from "flowbite-svelte";
   const items = Array(2);
 
   const open_all = () => items.forEach((_, i) => (items[i] = true));

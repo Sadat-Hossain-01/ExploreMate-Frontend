@@ -17,8 +17,6 @@
   let showable_destinations: Array<Destination> = [];
   let show_selected_ones: boolean = false;
 
-  $: console.log($plan_store.destinations);
-
   $: {
     destination_selections = destination_suggestions.filter(
       (destination: any) => destination.selected
