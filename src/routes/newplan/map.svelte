@@ -31,7 +31,7 @@
           fontWeight: "bold",
         },
         icon: {
-          url: "https://imgtr.ee/images/2023/09/02/e46582800a0159bcc0f42d289e068628.png",
+          url: "https://www.iconarchive.com/download/i103443/paomedia/small-n-flat/map-marker.1024.png",
           scaledSize: new google.maps.Size(64, 64),
         },
       });
