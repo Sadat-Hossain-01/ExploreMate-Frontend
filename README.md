@@ -2,6 +2,8 @@
 
 ExploreMate is travel app that allows users to search and plan their next tour. 
 
+YouTube Demo Link: https://youtu.be/aemQGtGdTa0
+
 ## Tech Stack
 - Sveltekit
 - Express.js
